@@ -1,0 +1,73 @@
+<header class="mb-1 shadow-lg sticky-top">
+<!-- <header class="mb-1 sticky-top"> -->
+
+  <!-- <div class="container-fluid bg-primary d-flex justify-content-center">
+    <p class='m-0 p-2 text-light'>Contactanos 03751-408245</p>
+  </div> -->
+  <nav class="navbar navbar-expand-xl navbar-dark px-2 py-0" id="menu">
+    <div class="container-fluid">
+      <a class="navbar-brand py-0 d-flex align-items-center" routerLink="inicio" (click)="clickLink('brand')">
+        <img src="../../../assets/imagenes/logo1_1.png" alt="">
+        <span class="text-white fs-3 fw-bold ps-2">CHAMIGO</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 ms-sm-4 mb-xl-0">
+          <!-- <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li> -->
+          <li class="nav-item" *ngIf="isInicio">
+            <!-- <a class="nav-link" style="cursor: pointer;" (click)="corrigeScroll('quienessomos')">Quiénes Somos?</a> -->
+            <a class="nav-link fw-bold" id='nosotros' (click)="clickLink('nosotros')" routerLink="nosotros">¿Quiénes Somos?</a>
+
+          </li>
+          <li class="nav-item" *ngIf="isInicio">
+            <a class="nav-link fw-bold" id="billetera" (click)="clickLink('billetera')" routerLink="billetera">¿Qué es una Billetera Virtual?</a>
+            <!-- <a class="nav-link" style="cursor: pointer;" (click)="corrigeScroll('queesunabilletera')">Qué es una Billetera Virtual?</a> -->
+          </li>
+          <li class="nav-item" *ngIf="isInicio">
+            <a class="nav-link fw-bold" id="beneficios" (click)="clickLink('beneficios')" routerLink="beneficios">Beneficios</a>
+          </li>
+          <li class="nav-item" *ngIf="isInicio">
+            <a class="nav-link fw-bold" id="contacto" (click)="clickLink('contacto')" routerLink="contacto">Contáctanos</a>
+          </li>
+          <li class="nav-item" *ngIf="isInicio && islogged">
+            <a class="nav-link fw-bold ms-xl-5" id="paneldecontrol" (click)="clickLink('paneldecontrol')" routerLink="dashboard">Panel de Control</a>
+          </li>
+        </ul>
+        <div class="nombre show text-white" *ngIf="!isInicio && islogged">Hola, <span class="fw-bold fs-6">{{currentUser.NombreCliente}}</span></div>
+        <div class="profile" *ngIf="islogged">
+          <div class="imgProfile" (click)="toggle()">
+            <a class="navbar-brand me-lg-5 brand-perfil">
+              <img alt="Brand" src="../../../assets/imagenes/fotoPerfil.jpg" *ngIf="tieneFoto">
+              <img alt="Brand" src="../../../assets/imagenes/userProfile.png" *ngIf="!tieneFoto">
+            </a>
+          </div>
+          <div class="menuProfile">
+            <h5 class="text-center fs-xl-6">Hola,<br><span class="fs-xl-5 fw-bold">{{currentUser.NombreCliente}}</span></h5>
+            <ul class="mt-3 mb-0">
+              <li (click)="perfil()">
+                <i class="bi bi-person-circle"></i>
+                <a>Mis Datos</a>
+              </li>
+              <li (click)="onlogout()">
+                <i class="bi bi-box-arrow-right"></i>
+                <a>Salir</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!-- <a class="navbar-brand me-lg-5" *ngIf="islogged" routerLink="inicio">
+          <img alt="Brand" src="../../../assets/imagenes/team1.jpg">
+        </a> -->
+        <div class="d-flex justify-content-around mb-2 mb-xl-0" *ngIf="!islogged">
+          <button class="btn rounded btn-secondary" (click)="clickLink('registro')" routerLink="registro">Registrate</button>
+          <div style="width: 30px;"></div>
+          <button class="btn btn-primary rounded" (click)="clickLink('login')" routerLink="login">Ingresa</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>

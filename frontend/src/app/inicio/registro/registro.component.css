@@ -1,0 +1,250 @@
+*,:after,:before{box-sizing:border-box}
+.clearfix:after,.clearfix:before{content:'';display:table}
+.clearfix:after{clear:both;display:block}
+a{color:inherit;text-decoration:none}
+
+.pageRegistro {
+	margin: 0;
+	color:#6a6f8c;
+  /* background: url('../../../assets/imagenes/nuevayork3.jpg') no-repeat center center; */
+  background-size: cover;
+	font:600 16px/18px 'Open Sans',sans-serif;
+  height: 39rem;
+  z-index: 1;
+}
+
+.registro-wrap{
+	width:100%;
+	margin:auto;
+	max-width:525px;
+  height: auto;
+	/* min-height:670px; */
+  /* min-height: 80vh; */
+	position:relative;
+	/* background:url(https://raw.githubusercontent.com/khadkamhn/day-01-contact-form/master/img/bg.jpg) no-repeat center; */
+	/* box-shadow:0 12px 15px 0 rgba(0,0,0,.24),0 17px 50px 0 rgba(0,0,0,.19); */
+}
+.registro-html{
+	width:95%;
+	height:100%;
+	/* position:absolute; */
+	padding-top: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  /* background:rgba(88, 92, 104, 0.9); */
+  /* background: linear-gradient(90deg, #99c3ed 0%, #456475 100%); */
+  background: linear-gradient(90deg, #456475 0%, #99c3ed 100%);
+  border-radius: 2rem;
+}
+
+h2 {
+  top: -5%;
+  color: rgba(255,255,255,.5);
+
+}
+.registro-html .sign-in-htm {
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	/* position:absolute; */
+	/* transform:rotateY(180deg); */
+	/* backface-visibility:hidden; */
+	transition:all .4s linear;
+}
+.registro-html .sign-in,
+.registro-form .group .check{
+	display:none;
+}
+.registro-html .tab,
+.registro-form .group .label,
+.registro-form .group .button{
+	text-transform:uppercase;
+}
+.registro-html .tab{
+	font-size:22px;
+	margin-right:15px;
+	padding-bottom:5px;
+	margin:0 15px 10px 0;
+	display:inline-block;
+	border-bottom:2px solid transparent;
+}
+.registro-html .sign-in:checked + .tab{
+	color:#fff;
+	border-color:#1161ee;
+}
+.registro-form{
+	min-height:345px;
+	position:relative;
+  top: -1rem;
+	perspective:1000px;
+	transform-style:preserve-3d;
+}
+.registro-form .group{
+	margin-bottom:15px;
+}
+.registro-form .group .label,
+.registro-form .group .input,
+.registro-form .group .button{
+	width:100%;
+	color:#fff;
+  display:block;
+}
+.registro-form .group .input,
+.registro-form .group .button{
+  border:none;
+	padding:15px 20px;
+	border-radius:15px;
+	background:rgba(255,255,255,.1);
+}
+
+.registro-form .group .input {
+  /* background-color: rgba(255,255,255,.2); */
+  background-color: rgba(51,51,51,.5);
+
+}
+
+.registro-form .group .input::placeholder {
+  color: rgba(255,255,255,.5);
+}
+
+.registro-form .group .input:focus::placeholder{
+  color: rgba(255,255,255,.2);
+}
+
+
+.registro-form .group .input:hover,
+.registro-form .group .input:focus{
+  outline: none;
+  border: 1px solid #1076be;
+}
+
+.registro-form .group .button:hover,
+.registro-form .group .button:focus {
+  outline: none;
+  border: 2px solid rgba(255,255,255,.2);
+}
+
+
+.registro-form .group input[data-type="password"]{
+	text-security:circle;
+	-webkit-text-security:circle;
+}
+.registro-form .group .label{
+	color:#aaa;
+	font-size:12px;
+}
+.registro-form .group .button{
+	background:#1161ee;
+}
+.registro-form .group label .icon{
+	width:15px;
+	height:15px;
+	border-radius:2px;
+	position:relative;
+	display:inline-block;
+	background:rgba(255,255,255,.1);
+}
+.registro-form .group label .icon:before,
+.registro-form .group label .icon:after{
+	content:'';
+	width:10px;
+	height:2px;
+	background:#fff;
+	/* position:absolute; */
+	transition:all .2s ease-in-out 0s;
+}
+.registro-form .group label .icon:before{
+	left:3px;
+	width:5px;
+	bottom:6px;
+	transform:scale(0) rotate(0);
+}
+.registro-form .group label .icon:after{
+	top:6px;
+	right:0;
+	transform:scale(0) rotate(0);
+}
+.registro-form .group .check:checked + label{
+	color:#fff;
+}
+.registro-form .group .check:checked + label .icon{
+	background:#1161ee;
+}
+.registro-form .group .check:checked + label .icon:before{
+	transform:scale(1) rotate(45deg);
+}
+.registro-form .group .check:checked + label .icon:after{
+	transform:scale(1) rotate(-45deg);
+}
+
+.alert-dangerus {
+  /* color: #721c24; */
+  /* background: #f8d7da; */
+  /* border-color: #f5c6cb; */
+  margin-bottom: 10px;
+}
+
+.container-error-message {
+	/* background:rgba(40,57,101,.9); */
+  	padding: 0px;
+}
+
+button {
+	border-radius: 1rem !important;
+}
+
+p {
+  color: #f7941f;
+}
+
+.tienesCuenta a {
+  text-decoration: underline;
+}
+
+.tienesCuenta a:hover {
+  text-decoration-color: #F07F54;
+}
+
+ul li:hover a {
+  text-decoration: underline;
+  text-decoration-color: #f7941f;
+}
+
+@media screen and (min-width:400px) {
+  .registro-html {
+    width: 80%;
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+}
+
+@media screen and (min-width:576px) {
+  .registro-html {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}
+
+@media screen and (min-width:768px) {
+
+  .registro-html{
+    width:90%;
+  }
+
+}
+
+@media screen and (min-width:1200px) {
+
+  .registro-html{
+    width:100%;
+  }
+
+}
+
+/* button:disabled {
+	background: gray;
+ 	color: rgba(255,255,255,.2);
+	border: none;
+} */

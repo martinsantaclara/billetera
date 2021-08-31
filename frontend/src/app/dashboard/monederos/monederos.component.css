@@ -1,0 +1,200 @@
+.monederos {
+  position: absolute;
+  z-index: 1;
+  width: 50%;
+  height: 60vh;
+  background-color: rgba(0,0,0,.2);
+
+  /* background: #E0EAFC; */
+  /* background: -webkit-linear-gradient(to right, #CFDEF3, #E0EAFC);  */
+  /* background: linear-gradient(to right, #CFDEF3, #E0EAFC); */
+
+
+
+  /* background: linear-gradient(to right, #EAEAEA, #DBDBDB, #F2F2F2, #ADA996);  */
+  box-shadow: 5px 5px 5px 5px rgba(0,0,0,.3);
+  top: 250px;
+  left: 40%;
+  border-radius: 15px;
+}
+
+.volver {
+  padding-left: 20px;
+  padding-top: 20px;
+  cursor: pointer;
+  color:white;
+  transition: font-size .5s ease-out;
+}
+
+.volver:hover {
+  font-size: 20px;
+}
+
+.titulo {
+  font-size: larger;
+  margin-left: 1rem;
+  top: -8px;
+}
+
+.encabezado img {
+  border-radius: 50%;
+}
+
+.nombrecripto {
+  color: orange;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.valorcriptopesos {
+  top: -38px;
+  left: 52px;
+}
+
+.botones {
+  position: relative;
+  margin: auto;
+  top: -40px;
+  width: 75%;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  /* background-color: rgba(255,255,255); */
+}
+
+.btn-cripto {
+  color: rgb(21, 216, 223);
+  border: 2px solid rgb(21, 216, 223);
+}
+
+.btn-cripto:hover, .btn-cripto:active, .btn-cripto:focus {
+  color: white;
+  background-color: rgb(21, 216, 223);
+}
+
+.transaccioncripto {
+  position: relative;
+  margin: auto;
+  top: -30px;
+  /* left: 5vw; */
+}
+
+.transaccioncripto.transferencia {
+  top: -40px;
+  /* left: 5vw; */
+}
+
+hr{
+	height:2px;
+  width: 90%;
+	margin:auto !important;
+	background:rgba(255, 255, 255, 0.7);
+}
+
+.transaccioncripto h6 {
+  position: relative;
+  top: 10px;
+  margin-top: 10px;
+  padding-left: 5%;
+}
+
+
+.transaccioncripto.transferencia h6 {
+  top: 0px;
+}
+
+.cripto-form {
+  position: relative;
+  top: 30px;
+  width: 100%;
+}
+
+.cripto-html {
+  position: relative;
+  top: -10px;
+  left: 30px;
+}
+
+.cripto-html.transferencia {
+  top: -20px;
+  left: 0px;
+}
+
+/* .origen.compra, .destino.compra {
+  flex-direction: row;
+}
+
+.origen.venta, .destino.venta {
+  flex-direction:row-reverse;
+} */
+
+input[type="number"] {
+  width: 120px;
+  text-align: right;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.importe {
+  margin-bottom: 20px;
+  width: 75%;
+}
+
+.botonesAction {
+  position: relative;
+  /* top:25px; */
+  padding: 10px;
+}
+
+.contenedorBtns {
+  /* border: 2px solid goldenrod; */
+  padding: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.origen.intercambio {
+  position: relative;
+  left: 50px;
+}
+
+.transferirA {
+  padding-left: 20%;
+  top: -10px;
+  margin-bottom: 5px;
+}
+
+.custom-radio.mr {
+  margin-right: 8px;
+}
+
+.custom-contol-label {
+  padding-left: 5px !important;
+}
+
+.destinatario {
+  padding-bottom: 10px;
+  width: 70%;
+}
+
+#beneficiarios {
+  height: 30px;
+  width: 65%;
+  /* align-self: flex-end; */
+}
+
+.montoTransferencia {
+  width: 70%;
+}
+
+.montoTransferencia .unidadInicial {
+  position: relative;
+  margin-left: 10%;
+}

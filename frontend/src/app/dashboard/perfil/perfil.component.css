@@ -1,0 +1,11 @@
+.perfil {
+  z-index: 1;
+  color: white;
+  top: 33.3%;
+  background-color: rgba(0,0,0,.2);
+  box-shadow: 5px 5px 5px 5px rgba(0,0,0,.3);
+  left: 40%;
+  border-radius: 15px;
+  height: 60vh;
+  width: 50vw;
+}

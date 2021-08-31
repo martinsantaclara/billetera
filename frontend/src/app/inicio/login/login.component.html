@@ -1,0 +1,56 @@
+<div class="pageLogin position-relative d-flex align-items-center" data-aos="fade-down" data-aos-duration="2000">
+    <div class="login-wrap d-flex justify-content-center">
+      <div class="login-html">
+        <h2 class="position-relative text-center text-white pb-2">Iniciar Sesión</h2>
+        <form [formGroup]="formulariologin" class="login-form" (ngSubmit)="onLogin()">
+          <div class="sign-in-html">
+            <div class="group">
+              <label for="email" class="label">Email</label>
+              <input id="email" type="text" class="input" formControlName="email">
+            </div>
+            <div class="group">
+              <label for="password" class="label">Contraseña</label>
+              <input id="password" type="password" class="input" formControlName="password" data-type=password>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexcheckdefault" formControlName="recuerdame">
+              <label class="form-check-label" for="flexcheckdefault">
+                Recuérdame
+              </label>
+            </div>
+
+            <!-- <div class="alert-dangerus" *ngIf="isError">
+              <div class="container-error-message d-flex flex-column align-items-center justify-content-center ">
+                <p class="pt-2 mb-0" style="color:red; display: inline;">Las credenciales ingresadas son incorrectas</p>
+                <ul class="mt-3 mb-0 d-flex ps-0" style="list-style: none; font-size: 20px; color:white;">
+                  <li (click)="reingresa()" style="cursor: pointer;">
+                    <i class="bi bi-arrow-repeat"></i>
+                    <a class="ms-2">Intentar Nuevamente</a>
+                  </li>
+                  <li (click)="salir()" class="ms-3" style="cursor: pointer;">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <a class="ms-2">Salir</a>
+                  </li>
+                </ul>
+              </div>
+            </div> -->
+
+            <div class="group">
+              <!-- <button class="button btn btn-primary" type="submit">Ingresar</button> -->
+              <button class="btn btn-primary w-100 p-3 mt-4 rounded" type="submit" [disabled]="formulariologin.invalid">Ingresar</button>
+              <!-- <input   class="button btn-primary" value="Ingresar"> -->
+            </div>
+            <div class="hr"></div>
+            <div class="foot-lnk">
+              <a href="#forgot">Olvidaste tu contraseña?</a>
+            </div>
+            <h6 class="noTienesCuenta mt-4 text-white">¿Todavía no tienes cuenta?
+              <a routerLink="/registro">Registrate</a>
+            </h6>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+

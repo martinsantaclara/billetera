@@ -1,0 +1,8 @@
+<div class="mensaje" mat-dialog-content>{{message}}</div>
+<div class="btnActions" mat-dialog-actions>
+  <button class="btnCancel" (click)="onClickNo()"><i class="bi bi-x-circle"></i><span>No</span></button>
+  <button class="btnOk" [matDialogClose]="true">
+    <i class="bi bi-check-circle"></i>
+    <span>Si</span>
+  </button>
+</div>

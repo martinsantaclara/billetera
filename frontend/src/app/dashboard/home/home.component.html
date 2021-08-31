@@ -1,0 +1,92 @@
+<div class="container position-relative sidebar">
+  <div class="row">
+    <div class="col-4 position-relative monederos">
+      <div class="panelcripto pesos"  (click)="monedero('pesos')">
+        <img src="../../../assets/imagenes/logo_peso1.png" alt="">
+        <span>Pesos</span>
+        <h2>$ 1200,00</h2>
+        </div>
+      <div class="panelcripto bitcoin" (click)="monedero('bitcoin')">
+        <img src="../../../assets/imagenes/logo_bitcoin.png" alt="">
+        <span>Bitcoin</span>
+        <div class="cotizacion position-relative">
+          <p class="cotizacioncripto">1 BTC = $ 6515298,37</p>
+          <p class="valorencriptomoneda">0,000153 BTC =</p>
+          <h2 class="valorenpesos">$ 1000,00</h2>
+        </div>
+      </div>
+      <div class="panelcripto ethereum"  (click)="monedero('ethereum')">
+        <img src="../../../assets/imagenes/logo_ethereum.png" alt="">
+        <span>Ethereum</span>
+        <div class="cotizacion position-relative">
+          <p class="cotizacioncripto">1 ETH = $ 424363,77</p>
+          <p class="valorencriptomoneda">0,001885 ETH =</p>
+          <h2 class="valorenpesos">$ 800,00</h2>
+        </div>
+      </div>
+      <div class="panelcripto usdc"  (click)="monedero('usdc')">
+        <img src="../../../assets/imagenes/logo_usdc.png" alt="">
+        <span>USD Coin</span>
+        <div class="cotizacion position-relative">
+          <p class="cotizacioncripto">1 USDC = $ 175,43</p>
+          <p class="valorencriptomoneda">2,280112 USDC =</p>
+          <h2 class="valorenpesos">$ 400,00</h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-8">
+      <div class="saldo position-relative">
+        <h1 class="text-center fs-2 mt-3 position-relative">Tu saldo actual es</h1>
+        <h1 class="text-center"><span class="importeSaldo">$ 3400,00</span></h1>
+      </div>
+
+      <div class="contenedorSlider position-relative d-flex justify-content-center">
+        <div class="call-to-action text-white text-center position-absolute" data-aos="flip-right" data-aos-easing="ease-out-cubic" data-aos-duration="15000">
+          <h3 class="fw-bold">Selecciona un monedero <br> y <br> elige que querés hacer </h3>
+        </div>
+        <div class="contenedorImagen pt-5">
+          <div id="carousel" class="carousel slide overflow-hidden" data-bs-ride="carousel">
+            <div id="carouselInner" class="carousel-inner">
+              <div class="carousel-item active" data-bs-interval="10000">
+                <div class="imagenCarrusel slide1"></div>
+                <!-- <img id="imagenCarrusel" src="../../../assets/imagenes/billeteravirtual61.jpg" class="d-block w-100 img-fluid claseImagenCarrusel" alt="slide2"> -->
+              </div>
+              <div class="carousel-item" data-bs-interval="10000">
+                <div class="imagenCarrusel  slide2"></div>
+                <!-- <img id="imagenCarrusel" src="../../../assets/imagenes/slide1.jpg" class="d-block w-100 img-fluid claseImagenCarrusel" alt="slide1"> -->
+              </div>
+              <div class="carousel-item" data-bs-interval="10000">
+                <div class="imagenCarrusel  slide3"></div>
+                <!-- <img id="imagenCarrusel" src="../../../assets/imagenes/slide2.jpg" class="d-block w-100 img-fluid claseImagenCarrusel" alt="slide2"> -->
+              </div>
+              <div class="carousel-item" data-bs-interval="10000">
+                <div class="imagenCarrusel  slide4"></div>
+                <!-- <img id="imagenCarrusel" src="../../../assets/imagenes/billeteravirtual11.jpg" class="d-block w-100 img-fluid claseImagenCarrusel" alt="slide2"> -->
+              </div>
+              <div class="carousel-item" data-bs-interval="10000">
+                <div class="imagenCarrusel  slide5"></div>
+                <!-- <img id="imagenCarrusel" src="../../../assets/imagenes/billeteravirtual41.jpg" class="d-block w-100 img-fluid claseImagenCarrusel" alt="slide2"> -->
+              </div>
+              <div class="carousel-item" data-bs-interval="10000">
+                <div class="imagenCarrusel  slide6"></div>
+                <!-- <img id="imagenCarrusel" src="../../../assets/imagenes/billeteravirtual51.jpg" class="d-block w-100 img-fluid claseImagenCarrusel" alt="slide2"> -->
+              </div>
+              <div class="carousel-item" data-bs-interval="10000">
+                <div class="imagenCarrusel  slide7"></div>
+                <!-- <img id="imagenCarrusel" src="../../../assets/imagenes/billeteravirtual51.jpg" class="d-block w-100 img-fluid claseImagenCarrusel" alt="slide2"> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>
+
+

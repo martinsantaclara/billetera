@@ -1,0 +1,185 @@
+.sidebar {
+  z-index: 1;
+
+}
+
+.monederos {
+  display: flex;
+  flex-direction: column;
+  height: 85vh;
+  gap: 10px;
+  z-index: 1;
+  cursor: pointer;
+  background:linear-gradient(90deg, #456475 0%, #99c3ed 100%);
+  border-radius: 2rem;
+  color: white;
+  padding-bottom: 10px;
+}
+
+.monederos  img {
+  height: 64px;
+  width: 64px;
+  border-radius: 50%;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.monederos span {
+  position: relative;
+  top: -10px;
+  margin-left: 10px;
+}
+
+.pesos {
+  border-top-left-radius: 32px;
+  border-top-right-radius: 32px;
+}
+
+.panelcripto {
+  margin-top: 10px;
+  background-color: rgba(0,0,0,.1);
+  box-shadow: 5px 5px 5px 5px rgba(255,255,255,.2);
+}
+
+.pesos h2 {
+  position: relative;
+  left: 40%;
+  top: -20px;
+}
+
+.cotizacioncripto {
+  position: absolute;
+  top: -30px;
+  left: 85px;
+}
+.valorencriptomoneda {
+  position: relative;
+  top: 5px;
+  margin-left: 10px;
+  /* display: inline-block; */
+  /* top: -15px !important; */
+}
+
+.valorenpesos {
+  position: absolute;
+  /* display: inline-block; */
+  top: 25px !important;
+  left: 40%;
+  /* font-size: 24px; */
+}
+
+.bitcoin {
+  flex-grow: 2;
+}
+
+.ethereum {
+  flex-grow: 2;
+}
+
+.usdc {
+  border-bottom-left-radius: 32px;
+  border-bottom-right-radius: 32px;
+  flex-grow: 2;
+}
+
+.pesos:hover, .bitcoin:hover, .ethereum:hover, .usdc:hover {
+  background-color: rgba(13, 204, 211, 0.1);
+}
+.saldo {
+  z-index: 1;
+  /* background-color: rgba(255,255,255,.2); */
+  background-color: rgba(0,0,0,.1);
+  box-shadow: 5px 5px 5px 5px rgba(255,255,255,.2);
+  color: white;
+  padding: 20px;
+  border-radius: 20px;
+  width: 60%;
+  margin: auto;
+/* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
+
+}
+
+.importeSaldo {
+  background: linear-gradient(90deg, #F07F54 0%, #c74a19 100%);
+  background-position: 0% 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 5px;
+}
+
+.call-to-action {
+  z-index: 1;
+  top: 11%;
+  top: 37%;
+  background-color: rgba(0,0,0,.5);
+  border-radius: 10px;
+}
+
+.call-to-action h3 {
+  line-height: 1.75rem;
+  padding: 5px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.contenedorImagen {
+  position: relative;
+  /* left: 10vw; */
+  width: 80%;
+  /* height: 25rem; */
+  /* height: auto; */
+  /* top: 22vh; */
+  display: flex;
+  justify-content:center;
+  /* align-items: center; */
+  margin-bottom: 30px;
+  z-index: -1;
+}
+
+#carousel {
+  /* position: relative;
+  flex-basis: 50%; */
+  display:flex;
+  align-items: center;
+  width: 100%;
+  height: 56vh;
+  /* margin-right: 2rem; */
+  border-radius: 30px;
+  z-index: 11;
+}
+
+.imagenCarrusel {
+  /* background-image: url("../../../assets/imagenes/Wallet_Isometric.svg"); */
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 70vh;
+  border-radius: 20px;
+  margin-right: 2rem;
+  z-index: 11;
+  /* height: 100vh; */
+}
+
+.slide1 {
+  background-image: url("../../../assets/imagenes/dashboard8.jpg");
+}
+.slide2 {
+  background-image: url("../../../assets/imagenes/dashboard2.jpg");
+}
+.slide3 {
+  background-image: url("../../../assets/imagenes/dashboard3.webp");
+}
+.slide4 {
+  background-image: url("../../../assets/imagenes/dashboard4.jpg");
+}
+.slide5 {
+  background-image: url("../../../assets/imagenes/dashboard5.webp");
+}
+.slide6 {
+  background-image: url("../../../assets/imagenes/dashboard6.jpg");
+}
+.slide7 {
+  background-image: url("../../../assets/imagenes/dashboard1.jpg");
+}
+
