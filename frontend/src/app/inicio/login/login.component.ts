@@ -19,11 +19,11 @@ export class LoginComponent implements OnInit {
 
   emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-  createFormGroup() {
+  createFormGroup(remember:boolean) {
     return new FormGroup ({
       email: new FormControl('',[Validators.required, Validators.pattern(this.emailPattern)]),
       password: new FormControl('',[Validators.required]),
-      recuerdame: new FormControl(true)
+      recuerdame: new FormControl(remember)
     });
   }
 
@@ -31,7 +31,8 @@ export class LoginComponent implements OnInit {
   public isError: Boolean = false;
 
   constructor(private authService: AuthService, private router: Router, private data: DataService, private notifyService: NotificacionService) {
-    this.formulariologin = this.createFormGroup();
+    const remember = (localStorage.getItem('recuerdame')!==null ? localStorage.getItem('recuerdame')==='true' : false);
+    this.formulariologin = this.createFormGroup(remember);
    }
 
   ngOnInit(): void {
@@ -52,9 +53,12 @@ export class LoginComponent implements OnInit {
 
       const email = this.formulariologin.get('email')!.value;
       const password = this.formulariologin.get('password')!.value;
+      const recuerdame = this.formulariologin.get('recuerdame')!.value;
 
       this.data.autenticacionCliente(email,password).subscribe({
         next: data => {
+
+          localStorage.setItem('recuerdame',recuerdame);
 
           let usuario: User = JSON.parse(data);
           console.log(usuario.NombreCliente);
@@ -86,12 +90,10 @@ export class LoginComponent implements OnInit {
           // }
         },
         error: error => {
-
-          // console.log(error.status);
           if (error.status==401){
             this.notifyService.showWarning('No existe ningún usuario registrado con esas credenciales','Atención');
           } else {
-            this.notifyService.showError('Contáctese con el Administrador','Ha ocurrido un Error');
+            this.notifyService.showError(error.name + ' Contáctese con el Administrador','Ha ocurrido un Error');
             setTimeout(()=> {
               this.router.navigate(['inicio']);
             },5000);

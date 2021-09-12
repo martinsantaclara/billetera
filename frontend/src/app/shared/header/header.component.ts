@@ -16,15 +16,18 @@ export class HeaderComponent implements OnInit {
 
   islogged = false;
   isInicio = true;
-  tieneFoto = true;
+  tieneFoto = false;
   currentUser: any;
 
 
   ngOnInit(): void {
     this.authService.getIslogged.subscribe( log => this.islogged = log);
     this.authService.getIsInicio.subscribe( ini => this.isInicio = ini);
-    this.authService.getUserSubject.subscribe( log => {
-      this.currentUser = log;
+    this.authService.getUserSubject.subscribe( user => {
+      this.currentUser = user;
+      if(this.currentUser!==null) {
+        this.tieneFoto = this.currentUser.UrlFoto!=="";
+      }
     });
   }
 

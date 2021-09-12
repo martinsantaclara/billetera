@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -12,6 +12,9 @@ import { PerfilComponent } from './perfil/perfil.component';
 import { MonederosComponent } from './monederos/monederos.component';
 import { HttpClientModule } from '@angular/common/http';
 
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { MayoraceroValidationDirective } from './validations/mayoracero-validation';
+
 
 
 @NgModule({
@@ -22,13 +25,16 @@ import { HttpClientModule } from '@angular/common/http';
     // EthereumComponent,
     // UsdcComponent,
     PerfilComponent,
-    MonederosComponent
+    MonederosComponent,
+    MayoraceroValidationDirective
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     DashboardRoutingModule,
-    HttpClientModule
-  ]
+    HttpClientModule,
+    NgxSpinnerModule,
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class DashboardModule { }

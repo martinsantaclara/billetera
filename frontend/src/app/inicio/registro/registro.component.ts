@@ -88,7 +88,7 @@ export class RegistroComponent implements OnInit {
                 if (response===1) {
                   this.notifyService.showWarning('Ya existe un usuario registrado con ese Email', 'Atención');
                 } else {
-                  this.notifyService.showWarning('Ha ocurrido un imprevisto. Intente nuevamente', 'Atención');
+                  this.notifyService.showWarning('Error momentáneo de conexión. Intente nuevamente', 'Atención');
                 }
                 setTimeout(()=> {
                   this.limpia();
@@ -102,7 +102,7 @@ export class RegistroComponent implements OnInit {
               }
             },
             error: error => {
-              this.notifyService.showError('Contáctese con el Administrador','Ha ocurrido un Error');
+              this.notifyService.showError(error.name + ' Contáctese con el Administrador','Ha ocurrido un Error');
               setTimeout(()=> {
                 this.salir()
                 // this.router.navigate(['inicio']);

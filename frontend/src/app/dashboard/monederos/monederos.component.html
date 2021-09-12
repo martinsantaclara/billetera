@@ -8,7 +8,7 @@
     <p class="position-relative titulo text-white">Mi cuenta en <span class="nombrecripto">{{nombreCripto}}</span> </p>
   </div>
   <p class="position-relative text-center valorcriptopesos fw-bold text-white">
-    <span *ngIf="monedero!=='pesos'">{{saldoEnCripto}} {{unidadCripto}} = </span><span class="fs-4">$ {{saldoEnPesos}}</span> </p>
+    <span *ngIf="monedaDashboard.EsCripto">{{saldoEnCripto}} {{unidadCripto}} = </span><span class="fs-4">{{simboloMonedaPrincipal}} {{saldoEnPesos}}</span> </p>
   <div class="botones d-flex justify-content-evenly">
     <button class="btn btn-cripto" (click)="transaction(transaccion1)">
       <i class="bi bi-box-arrow-in-down-left"></i>
@@ -37,7 +37,7 @@
           <div class="importe d-flex justify-content-center align-items-center" *ngIf="transaccion!=='Transferir'">
             <label for="monto" class="label me-2" *ngIf="transaccion!=='Intercambiar'">Ingrese un monto:</label>
             <div class="origen d-flex align-items-center" *ngIf="transaccion==='Comprar' || transaccion==='Ingresar'">
-              <label class="label unidadInicial me-2">$</label>
+              <label class="label unidadInicial me-2">{{simboloMonedaPrincipal}}</label>
               <input id="monto" type="number" class="input" formControlName="monto" (input)="calculoCripto(transaccion,formularioCripto.value.monto)" placeholder="0.00">
               <label class="label mx-2" *ngIf="transaccion==='Comprar'">=</label>
               <label class="label valorFinal me-2" *ngIf="transaccion==='Comprar'">{{valorFin}}</label>
@@ -47,7 +47,7 @@
               <input id="monto" type="number" class="input" formControlName="monto" (input)="calculoCripto('Vender',formularioCripto.value.monto)" placeholder="0.00">
               <label class="label unidadInicial ms-2">{{unidadCripto}}</label>
               <label class="label mx-2">=</label>
-              <label class="label unidadFinal">$</label>
+              <label class="label unidadFinal">{{simboloMonedaPrincipal}}</label>
               <label class="label valorFinal ms-2">{{valorFin}}</label>
             </div>
             <div class="origen intercambio d-flex align-items-center" *ngIf="transaccion==='Intercambiar'">
@@ -56,10 +56,16 @@
               <i class="bi bi-arrow-right-circle mx-3 fs-2"></i>
               <!-- <label class="label mx-2">=</label> -->
               <label class="label valorFinal me-2">{{valorFin}}</label>
-              <select class="custom-select fs-6" name="listaCripto" id="listaCripto" formControlName="cripto" (change)="calculoIntercambio(formularioCripto.value.monto,formularioCripto.value.cripto)">
+              <!-- <select class="custom-select fs-6" name="listaCripto" id="listaCripto" formControlName="cripto" (change)="calculoIntercambio(formularioCripto.value.monto,formularioCripto.value.cripto)">
                 <option value={{cripto1}}>{{cripto1}}</option>
                 <option value={{cripto2}}>{{cripto2}}</option>
+              </select> -->
+
+              <select class="custom-select fs-6" name="listaCripto" id="listaCripto" formControlName="cripto" (change)="calculoIntercambio(formularioCripto.value.monto,formularioCripto.value.cripto)">
+                <!-- <option Selected  >Elija una Criptomoneda...</option> -->
+                <option [ngValue]="cripto" *ngFor="let cripto of criptos; let i = index">{{cripto.SimboloMoneda}}</option>
               </select>
+
               <!-- <label class="label unidadFinal">ETH</label> -->
             </div>
           </div>
@@ -76,19 +82,25 @@
                   <label class="custom-control-label" for="customRadioInline2">Email</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
-                  <input type="radio" id="customRadioInline3" name="customRadioInline1" class="custom-control-input" (click)="radio('nombre')">
-                  <label class="custom-control-label" for="customRadioInline1">Nombre</label>
+                  <input type="radio" id="customRadioInline3" name="customRadioInline1" class="custom-control-input" (click)="radio('alias')">
+                  <label class="custom-control-label" for="customRadioInline1">Alias</label>
                 </div>
               </div>
-              <select class="custom-select fs-6" name="beneficiarios" id="beneficiarios" formControlName="beneficiario">
-                <option selected>{{textoDefault}}</option>
-                <option *ngFor="let cvu of cvus" [value]="cvu">{{cvu}}</option>
-                <!-- <option value="Juan Carlos Mareco">Juan Carlos Mareco</option>
-                <option value="Oscar Alberto Di Pasquale">Oscar Alberto Di Pasquale</option> -->
+              <select *ngIf="selectCvu" class="custom-select fs-6" name="beneficiarios" id="beneficiarios" formControlName="beneficiario">
+                <option Selected>Seleccione un CVU...</option>
+                <option [ngValue]="cvu" *ngFor="let cvu of clienteTransfer">{{cvu.Cvu}}</option>
+              </select>
+              <select *ngIf="selectEmail" class="custom-select fs-6" name="beneficiarios" id="beneficiarios" formControlName="beneficiario">
+                  <option Selected>Seleccione un Email...</option>
+                  <option [ngValue]="email" *ngFor="let email of clienteTransfer">{{email.Email}}</option>
+              </select>
+              <select *ngIf="selectAlias" class="custom-select fs-6" name="beneficiarios" id="beneficiarios" formControlName="beneficiario">
+                <option Selected>Seleccione un Alias...</option>
+                <option [ngValue]="alias" *ngFor="let alias of clienteTransfer">{{alias.Alias}}</option>
               </select>
             </div>
             <div class="montoTransferencia d-flex align-items-center justify-content-between">
-              <label for="monto" class="label me-2 d-block">Ingrese un monto:  $</label>
+              <label for="monto" class="label me-2 d-block">Ingrese un monto: {{simboloMonedaPrincipal}}</label>
               <input id="monto" type="number" class="input" formControlName="monto" placeholder="0.00">
             </div>
           </div>

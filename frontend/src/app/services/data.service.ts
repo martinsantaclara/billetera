@@ -113,6 +113,42 @@ export class DataService {
     return this.http.post<any>(`${this.apiBaseUrl}/registro`, body,requestOptions);
   }
 
+  getMonedas(){
+    return this.http.get<any>(`${this.apiBaseUrl}/monedas`)
+  }
+
+  getMonedaPrincipal(idCuenta: number, idMoneda: number){
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json'}}
+      const body = JSON.stringify({IdCuenta: idCuenta, IdMoneda: idMoneda});
+    return this.http.post<any>(`${this.apiBaseUrl}/cuentamoneda`,body, requestOptions)
+  }
+
+  postMonedas(id: number, token:string) {
+    const tokenAuth = (token!=='' ? 'Bearer ' + token : '');
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json',
+                 'Authorization': tokenAuth}}
+      const body = JSON.stringify({Id: id});
+    return this.http.post<any>(`${this.apiBaseUrl}/monedas`,body, requestOptions)
+  }
+
+  getConfiguraciones(token: string) {
+    const tokenAuth = (token!=='' ? 'Bearer ' + token : '');
+    let httpHeader: HttpHeaders = new HttpHeaders();
+    httpHeader = httpHeader.append('Content-Type', 'application/json');
+    httpHeader = httpHeader.append('Authorization', tokenAuth);
+    const requestOptions = {
+      method: 'POST',
+      headers: httpHeader}
+    const body = "hola";
+    return this.http.post<any>(`${this.apiBaseUrl}/configuraciones`,body,requestOptions)
+    // return this.http.get<any>(`${this.apiBaseUrl}/configuraciones`)
+
+  }
+
 }
 
 

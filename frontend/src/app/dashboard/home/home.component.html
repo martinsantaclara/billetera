@@ -1,43 +1,45 @@
 <div class="container position-relative sidebar">
   <div class="row">
     <div class="col-4 position-relative monederos">
-      <div class="panelcripto pesos"  (click)="monedero('pesos')">
-        <img src="../../../assets/imagenes/logo_peso1.png" alt="">
-        <span>Pesos</span>
-        <h2>$ 1200,00</h2>
+      <div *ngFor="let moneda of monedas; let i = index">
+        <div *ngIf="moneda.IdMoneda===monedaPrincipal" [ngClass]="moneda.Clase" (click)="monedero(i,moneda.Abreviatura.trim())">
+          <img [src]="moneda.UrlLogoMoneda" alt="">
+          <span>{{moneda.NombreMoneda}}</span>
+          <h2>{{moneda.SimboloMoneda}} {{moneda.TotalEnPesos}}</h2>
         </div>
-      <div class="panelcripto bitcoin" (click)="monedero('bitcoin')">
-        <img src="../../../assets/imagenes/logo_bitcoin.png" alt="">
-        <span>Bitcoin</span>
-        <div class="cotizacion position-relative">
-          <p class="cotizacioncripto">1 BTC = $ 6515298,37</p>
-          <p class="valorencriptomoneda">0,000153 BTC =</p>
-          <h2 class="valorenpesos">$ 1000,00</h2>
+        <div *ngIf="moneda.IdMoneda!==monedaPrincipal" [ngClass]="moneda.Clase" (click)="monedero(i,moneda.Abreviatura.trim())">
+          <img [src]="moneda.UrlLogoMoneda" alt="">
+          <span>{{moneda.NombreMoneda}}</span>
+          <div class="cotizacion position-relative">
+            <p class="cotizacioncripto">1 {{moneda.SimboloMoneda}} = {{simboloMonedaPrincipal}} {{moneda.Cotizacion}}</p>
+            <p class="valorencriptomoneda">{{moneda.Cantidad}} {{moneda.SimboloMoneda}} =</p>
+            <h2 class="valorenpesos">{{simboloMonedaPrincipal}} {{moneda.TotalEnPesos}}</h2>
+          </div>
         </div>
-      </div>
-      <div class="panelcripto ethereum"  (click)="monedero('ethereum')">
-        <img src="../../../assets/imagenes/logo_ethereum.png" alt="">
-        <span>Ethereum</span>
-        <div class="cotizacion position-relative">
-          <p class="cotizacioncripto">1 ETH = $ 424363,77</p>
-          <p class="valorencriptomoneda">0,001885 ETH =</p>
-          <h2 class="valorenpesos">$ 800,00</h2>
+        <!-- <div class="panelcripto ethereum"  (click)="monedero('ethereum')">
+          <img src="../../../assets/imagenes/logo_ethereum.png" alt="">
+          <span>Ethereum</span>
+          <div class="cotizacion position-relative">
+            <p class="cotizacioncripto">1 ETH = $ 424363,77</p>
+            <p class="valorencriptomoneda">0,001885 ETH =</p>
+            <h2 class="valorenpesos">$ 800,00</h2>
+          </div>
         </div>
-      </div>
-      <div class="panelcripto usdc"  (click)="monedero('usdc')">
-        <img src="../../../assets/imagenes/logo_usdc.png" alt="">
-        <span>USD Coin</span>
-        <div class="cotizacion position-relative">
-          <p class="cotizacioncripto">1 USDC = $ 175,43</p>
-          <p class="valorencriptomoneda">2,280112 USDC =</p>
-          <h2 class="valorenpesos">$ 400,00</h2>
-        </div>
+        <div class="panelcripto usdc"  (click)="monedero('usdc')">
+          <img src="../../../assets/imagenes/logo_usdc.png" alt="">
+          <span>USD Coin</span>
+          <div class="cotizacion position-relative">
+            <p class="cotizacioncripto">1 USDC = $ 175,43</p>
+            <p class="valorencriptomoneda">2,280112 USDC =</p>
+            <h2 class="valorenpesos">$ 400,00</h2>
+          </div>
+        </div> -->
       </div>
     </div>
     <div class="col-8">
       <div class="saldo position-relative">
         <h1 class="text-center fs-2 mt-3 position-relative">Tu saldo actual es</h1>
-        <h1 class="text-center"><span class="importeSaldo">$ 3400,00</span></h1>
+        <h1 class="text-center"><span class="importeSaldo">{{simboloMonedaPrincipal}} {{saldoActual}}</span></h1>
       </div>
 
       <div class="contenedorSlider position-relative d-flex justify-content-center">
@@ -79,14 +81,10 @@
           </div>
         </div>
       </div>
-
-
-
-
     </div>
   </div>
 </div>
-
 <router-outlet></router-outlet>
+<ngx-spinner type="ball-newton-cradle">  <p style="font-size: 20px; color: white">Cargando datos...</p></ngx-spinner>
 
 

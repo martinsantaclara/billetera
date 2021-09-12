@@ -70,19 +70,22 @@
 
 .bitcoin {
   flex-grow: 2;
+  height: 145px;
 }
 
 .ethereum {
   flex-grow: 2;
+  height: 145px;
 }
 
-.usdc {
+.usd-coin {
   border-bottom-left-radius: 32px;
   border-bottom-right-radius: 32px;
   flex-grow: 2;
+  height: 145px;
 }
 
-.pesos:hover, .bitcoin:hover, .ethereum:hover, .usdc:hover {
+.pesos:hover, .bitcoin:hover, .ethereum:hover, .usd-coin:hover {
   background-color: rgba(13, 204, 211, 0.1);
 }
 .saldo {

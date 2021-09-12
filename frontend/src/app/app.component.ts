@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +7,15 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'chamigo';
+
+  @HostListener('window:unload', [ '$event' ])
+  unloadHandler(event: any) {
+    if (localStorage.getItem('recuerdame')!==null) {
+      if (localStorage.getItem('recuerdame')==='false') {
+        localStorage.removeItem('usuario');
+        localStorage.removeItem('logged');
+      }
+    }
+  }
+
 }

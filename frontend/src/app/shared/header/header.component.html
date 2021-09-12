@@ -41,7 +41,8 @@
         <div class="profile" *ngIf="islogged">
           <div class="imgProfile" (click)="toggle()">
             <a class="navbar-brand me-lg-5 brand-perfil">
-              <img alt="Brand" src="../../../assets/imagenes/fotoPerfil.jpg" *ngIf="tieneFoto">
+              <!-- <img alt="Brand" src="../../../assets/imagenes/fotoPerfil.jpg" *ngIf="tieneFoto"> -->
+              <img alt="Brand" src={{currentUser.UrlFoto}} *ngIf="tieneFoto">
               <img alt="Brand" src="../../../assets/imagenes/userProfile.png" *ngIf="!tieneFoto">
             </a>
           </div>

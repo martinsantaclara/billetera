@@ -11,7 +11,6 @@ export class AuthService {
   public islogged = new BehaviorSubject<boolean>(this.checkIslogin());
   public isInicio = new BehaviorSubject<boolean>(this.checkIsInicio());
   public userSubject = new BehaviorSubject<User>(this.getUsuario());
-  // public currentUser = new BehaviorSubject<User>(this.checkIsInicio());
 
 
   getUsuario() {
@@ -24,7 +23,6 @@ export class AuthService {
 
 
   checkIslogin() {
-    console.log('logueado');
     if (localStorage.getItem('logged') !== null) {
       const log = localStorage.getItem('logged');
       return ((log === 'true' ? true : false));
