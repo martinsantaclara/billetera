@@ -56,12 +56,12 @@ export class HeaderComponent implements OnInit {
     if (id!=='brand' && id!=='registro' && id!=='login'){
       this.render.addClass(link,'active');
       if (id==='paneldecontrol') {
-        localStorage.removeItem('inicio');
+        sessionStorage.setItem('inicio','false');
         this.authService.isInicio.next(false);
       }
     } else {
       if (id==='brand') {
-        localStorage.setItem('inicio','true');
+        sessionStorage.setItem('inicio','true');
         this.authService.isInicio.next(true);
         if (toggleMenu?.classList.contains('active')) {
           this.render.removeClass(toggleMenu,'active');
@@ -99,9 +99,11 @@ export class HeaderComponent implements OnInit {
     this.authService.userSubject.next(usuario);
     localStorage.removeItem('logged');
     this.authService.islogged.next(false);
-    localStorage.removeItem('inicio');
+    localStorage.removeItem('moneda');
+    sessionStorage.removeItem('inicio');
     this.authService.isInicio.next(true);
-    this.router.navigate(['']);
+    window.location.href = '/inicio';
+    // this.router.navigate(['']);
   }
 
   perfil() {
@@ -130,7 +132,6 @@ export class HeaderComponent implements OnInit {
 
       } else {
         this.render.removeClass(navbarMenu,'scroll');
-
       }
   }
 }

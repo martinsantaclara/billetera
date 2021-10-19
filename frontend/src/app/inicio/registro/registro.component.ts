@@ -32,15 +32,30 @@ export class RegistroComponent implements OnInit {
     });
   }
 
+  createFormPreguntas() {
+    return new FormGroup ({
+      respuesta1: new FormControl('',[Validators.required, Validators.maxLength(50)]),
+      respuesta2: new FormControl('',[Validators.required, Validators.maxLength(50)]),
+      respuesta3: new FormControl('',[Validators.required, Validators.maxLength(50)]),
+    });
+  }
+
   registroForm: FormGroup;
+  preguntasForm: FormGroup;
   public isError: Boolean;
+  public pregunta1='';
+  public pregunta2='';
+  public pregunta3='';
 
   constructor(private render: Renderer2, private data: DataService, private router: Router, private notifyService: NotificacionService ) {
     this.registroForm = this.createFormGroup();
+    this.preguntasForm = this.createFormPreguntas();
     this.isError = false;
    }
 
   ngOnInit(): void {
+
+    console.log('entra a registro');
 
     const elment = document.getElementById('registro-wrap');
     const obj = elment?.getBoundingClientRect();
@@ -52,19 +67,43 @@ export class RegistroComponent implements OnInit {
 
     Aos.init();
 
+
+    this.data.getPreguntas().subscribe({
+      next: data => {
+        console.log(data);
+        this.pregunta1 = data[0].Pregunta1;
+        this.pregunta2 = data[0].Pregunta2;
+        this.pregunta3 = data[0].Pregunta3;
+      },
+      error: error => {
+        this.notifyService.showError(error.name + ' Contáctese con el Administrador','Ha ocurrido un Error');
+        setTimeout(()=> {
+          this.salir()
+          // this.router.navigate(['contacto']);
+        },5000);
+      }
+    });
+
     // const imagenCarrusel = document.getElementsByClassName('claseImagenCarrusel');
     // const carrusel = document.getElementById('carousel');
     // this.render.addClass(carrusel,'dark');
     // for (var i = 0; i < imagenCarrusel.length; i++) {
     //   this.render.setStyle(imagenCarrusel[i],'height','100vh');
     // }
+
+
+
   }
 
   onRegister() {
-    if (this.registroForm.valid) {
+
+    if (this.registroForm.valid && this.preguntasForm.valid) {
       const nombre = this.registroForm.get('nombre')!.value;
       const email = this.registroForm.get('email')!.value;
       const password = this.registroForm.get('password')!.value;
+      const respuesta1 = this.preguntasForm.get('respuesta1')?.value;
+      const respuesta2 = this.preguntasForm.get('respuesta2')?.value;
+      const respuesta3 = this.preguntasForm.get('respuesta3')?.value;
       const cvu = this.getCvu(10);
       let alias='';
       let palabras=[];
@@ -76,7 +115,8 @@ export class RegistroComponent implements OnInit {
           }
           alias = this.obtieneAlias(palabras,3,1000);
           console.log(alias);
-          this.data.registroCliente(nombre,email,password,cvu,alias,"Habilitado").subscribe({
+          this.data.registroCliente(nombre,email,password,cvu,alias,this.pregunta1,respuesta1,
+                                    this.pregunta2,respuesta2,this.pregunta3,respuesta3,"Habilitado").subscribe({
             next: response => {
               console.log(response);
               if (response===200) {
@@ -154,8 +194,17 @@ export class RegistroComponent implements OnInit {
     });
   }
 
+  limpiaPreguntas() {
+    this.preguntasForm = new FormGroup ({
+      respuesta1: new FormControl('',[Validators.required, Validators.maxLength(50)]),
+      respuesta2: new FormControl('',[Validators.required, Validators.maxLength(50)]),
+      respuesta3: new FormControl('',[Validators.required, Validators.maxLength(50)]),
+    });
+  }
+
   salir() {
-    this.router.navigate(['inicio']);
+    // this.router.navigate(['inicio']);
+    window.location.href = 'inicio';
   }
 
   agregaError() {
@@ -182,5 +231,10 @@ export class RegistroComponent implements OnInit {
   get email() { return this.registroForm.get('email'); }
   get password() { return this.registroForm.get('password'); }
   get repitPassword() { return this.registroForm.get('repitPassword'); }
+
+  get respuesta1() {return this.preguntasForm.get('respuesta1');}
+  get respuesta2() {return this.preguntasForm.get('respuesta2');}
+  get respuesta3() {return this.preguntasForm.get('respuesta3');}
+
 
 }

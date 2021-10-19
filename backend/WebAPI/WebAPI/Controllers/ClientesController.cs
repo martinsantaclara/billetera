@@ -11,7 +11,7 @@ using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
-    public class ClientesController : ApiController
+        public class ClientesController : ApiController
     {
         string cadenaDeConexion = ConfigurationManager.ConnectionStrings["MiConexion"].ConnectionString;
 
@@ -165,8 +165,24 @@ namespace WebAPI.Controllers
         }
 
         // PUT: api/Clientes/5
-        public void Put(int id, [FromBody]string value)
+        [HttpPut]
+        public IHttpActionResult Put(int id, [FromBody]string value)
         {
+            using (SqlConnection conector = new SqlConnection(cadenaDeConexion))
+            {
+                conector.Open();
+
+                byte[] data = System.Text.Encoding.ASCII.GetBytes(value);
+                data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
+                String hash = System.Text.Encoding.ASCII.GetString(data);
+
+                SqlCommand cmd = new SqlCommand(@"Update Clientes SET Password=@Password WHERE IdCliente=@id", conector);
+                cmd.Parameters.Add(new SqlParameter("@id", id));
+                cmd.Parameters.Add(new SqlParameter("@Password", hash));
+
+                int i = cmd.ExecuteNonQuery();
+            }
+            return Ok();
         }
 
         // DELETE: api/Clientes/5

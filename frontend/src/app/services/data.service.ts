@@ -92,8 +92,24 @@ export class DataService {
     return this.http.get<any>(`${this.apiBaseUrl}/clientes/${id}`);
   }
 
+
+  // WEB API
   getClientesByEmail(email: string) {
     return this.http.get<any>(`${this.apiBaseUrl}/clientes/byEmail/?email=${email}`);
+  }
+
+
+  // CHAMIGO CON ANGULAR WEB API
+  // getClientesByEmail(email: string) {
+  //   return this.http.get<any>(`${this.apiBaseUrl}/clientebyemail/${email}`);
+  // }
+
+  putPasswordCliente(idCliente: number, password: string){
+    const requestOptions = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' }};
+    const  body= JSON.stringify(password);
+    return this.http.put<any>(`${this.apiBaseUrl}/clientes/${idCliente}`,body,requestOptions);
   }
 
   autenticacionCliente(email: string, password: string){
@@ -105,11 +121,15 @@ export class DataService {
 
   }
 
-  registroCliente(nombre: string, email: string, password: string, cvu: string, alias: string, estado: string){
+  registroCliente(nombre: string, email: string, password: string, cvu: string, alias: string,
+                  pregunta1: string, respuesta1: string, pregunta2: string, respuesta2: string,
+                  pregunta3: string, respuesta3: string, estado: string){
     const requestOptions = {
           method: 'POST',
           headers: { 'Content-Type': 'application/json'}}
-    const body = JSON.stringify({NombreCliente: nombre, Email: email, Password: password, Cvu: cvu, Alias: alias, Estado: estado});
+    const body = JSON.stringify({NombreCliente: nombre, Email: email, Password: password, Cvu: cvu, Alias: alias,
+                                 Pregunta1: pregunta1, Respuesta1: respuesta1, Pregunta2: pregunta2, Respuesta2: respuesta2,
+                                 Pregunta3: pregunta3, Respuesta3: respuesta3, Estado: estado});
     return this.http.post<any>(`${this.apiBaseUrl}/registro`, body,requestOptions);
   }
 
@@ -135,19 +155,34 @@ export class DataService {
     return this.http.post<any>(`${this.apiBaseUrl}/monedas`,body, requestOptions)
   }
 
+  // getConfiguraciones(token: string) {
+  //   const tokenAuth = (token!=='' ? 'Bearer ' + token : '');
+  //   let httpHeader: HttpHeaders = new HttpHeaders();
+  //   httpHeader = httpHeader.append('Content-Type', 'application/json');
+  //   httpHeader = httpHeader.append('Authorization', tokenAuth);
+  //   const requestOptions = {
+  //     method: 'POST',
+  //     headers: httpHeader}
+  //   const body = "hola";
+  //   return this.http.post<any>(`${this.apiBaseUrl}/configuraciones`,body,requestOptions)
+  // }
+
   getConfiguraciones(token: string) {
     const tokenAuth = (token!=='' ? 'Bearer ' + token : '');
-    let httpHeader: HttpHeaders = new HttpHeaders();
-    httpHeader = httpHeader.append('Content-Type', 'application/json');
-    httpHeader = httpHeader.append('Authorization', tokenAuth);
     const requestOptions = {
       method: 'POST',
-      headers: httpHeader}
-    const body = "hola";
+      headers: { 'Content-Type': 'application/json',
+                 'Authorization': tokenAuth}}
+      const body = JSON.stringify({Email: "martin@gmail.com"});
     return this.http.post<any>(`${this.apiBaseUrl}/configuraciones`,body,requestOptions)
-    // return this.http.get<any>(`${this.apiBaseUrl}/configuraciones`)
-
   }
+
+
+  getPreguntas(){
+    console.log(this.apiBaseUrl);
+    return this.http.get<any>(`${this.apiBaseUrl}/configuraciones`)
+  }
+
 
 }
 

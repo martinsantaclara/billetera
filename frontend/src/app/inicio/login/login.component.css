@@ -62,7 +62,6 @@ h2{
 	border-bottom:2px solid transparent;
 }
 
-
 .login-form{
 	min-height:345px;
 	position:relative;
@@ -70,6 +69,15 @@ h2{
 	perspective:1000px;
 	transform-style:preserve-3d;
 }
+.login-form.recupero {
+  min-height: 0;
+}
+
+#lineaEntreFormularios {
+  height: 5px;
+  background: #dee2e6;
+}
+
 .login-form .group{
 	margin-bottom:15px;
 }
@@ -178,6 +186,24 @@ ul li a {
 ul li:hover a {
   text-decoration: underline;
   text-decoration-color: #f7941f;
+}
+
+.modal-content {
+  background: linear-gradient(90deg, #456475 0%, #99c3ed 100%);
+  border-radius: 2rem;
+}
+.modal-title {
+  flex-grow: 1;
+}
+
+.label.emailRecupero {
+  font-weight: bolder;
+  text-align: start;
+  padding-left: 10px;
+}
+
+.input.emailRecupero {
+  line-height: 18px;
 }
 
 @media screen and (min-width:400px) {

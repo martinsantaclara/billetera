@@ -66,13 +66,16 @@ namespace WebAPI.JWT
             catch (SecurityTokenValidationException)
             {
                 statusCode = HttpStatusCode.Unauthorized;
+
             }
             catch (Exception)
             {
                 statusCode = HttpStatusCode.InternalServerError;
+
             }
 
             return Task<HttpResponseMessage>.Factory.StartNew(() => new HttpResponseMessage(statusCode) { });
+            
         }
         public bool LifetimeValidator(DateTime? notBefore, DateTime? expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
         {

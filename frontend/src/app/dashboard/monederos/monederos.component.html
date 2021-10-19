@@ -18,9 +18,9 @@
       <i class="bi bi-box-arrow-up-right"></i>
       {{transaccion2}}
     </button>
-    <button class="btn btn-cripto" (click)="transaction('Intercambiar')" *ngIf="transaccion3">
+    <button class="btn btn-cripto" (click)="transaction(transaccion3)">
       <i class="bi bi-arrow-left-right"></i>
-      Intercambiar
+      {{transaccion3}}
     </button>
   </div>
   <div [ngClass]="{transaccioncripto: transaccion, transferencia: transaccion==='Transferir', pepito: transaccion}" *ngIf="transaccion">
@@ -36,7 +36,7 @@
 
           <div class="importe d-flex justify-content-center align-items-center" *ngIf="transaccion!=='Transferir'">
             <label for="monto" class="label me-2" *ngIf="transaccion!=='Intercambiar'">Ingrese un monto:</label>
-            <div class="origen d-flex align-items-center" *ngIf="transaccion==='Comprar' || transaccion==='Ingresar'">
+            <div class="origen d-flex align-items-center" *ngIf="transaccion==='Comprar' || transaccion==='Ingresar' || transaccion==='Retirar'">
               <label class="label unidadInicial me-2">{{simboloMonedaPrincipal}}</label>
               <input id="monto" type="number" class="input" formControlName="monto" (input)="calculoCripto(transaccion,formularioCripto.value.monto)" placeholder="0.00">
               <label class="label mx-2" *ngIf="transaccion==='Comprar'">=</label>
@@ -62,7 +62,7 @@
               </select> -->
 
               <select class="custom-select fs-6" name="listaCripto" id="listaCripto" formControlName="cripto" (change)="calculoIntercambio(formularioCripto.value.monto,formularioCripto.value.cripto)">
-                <!-- <option Selected  >Elija una Criptomoneda...</option> -->
+                <option Selected  >Cripto...</option>
                 <option [ngValue]="cripto" *ngFor="let cripto of criptos; let i = index">{{cripto.SimboloMoneda}}</option>
               </select>
 

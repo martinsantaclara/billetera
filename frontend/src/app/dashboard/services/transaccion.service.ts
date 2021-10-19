@@ -30,4 +30,8 @@ export class TransaccionService {
     return this.http.post<any>(`${this.apiBaseUrl}/transacciones/transaccion`,body, requestOptions)
   }
 
+  ultimosMovimientos(idCuenta: number) {
+    return this.http.get<any>(`${this.apiBaseUrl}/movimientos/${idCuenta}`);
+  }
+
 }

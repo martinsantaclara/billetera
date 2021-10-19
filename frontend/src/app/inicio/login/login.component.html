@@ -42,7 +42,7 @@
             </div>
             <div class="hr"></div>
             <div class="foot-lnk">
-              <a href="#forgot">Olvidaste tu contraseña?</a>
+              <a href="#forgot" data-bs-toggle="modal" data-bs-target="#ModalRecuperarContraseña" (click)="modalRecupero()">Olvidaste tu contraseña?</a>
             </div>
             <h6 class="noTienesCuenta mt-4 text-white">¿Todavía no tienes cuenta?
               <a routerLink="/registro">Registrate</a>
@@ -52,5 +52,89 @@
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="ModalRecuperarContraseña" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content text-white">
+        <div class="modal-header">
+          <h4 class="modal-title text-center" id="exampleModalLabel">Recuperación de Contraseña</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center mt-4">
+          <form [formGroup]="formularioRecuperoEmail" class="login-form recupero" (ngSubmit)="onRecupero()">
+            <div class="sign-in-html d-flex align-items-center justify-content-evenly">
+              <div class="group flex-grow-1">
+                <label for="emailRecupero" class="label emailRecupero">Ingresa tu Email</label>
+                <input id="emailRecupero" type="text" class="input emailRecupero" formControlName="emailRecupero">
+              </div>
+              <div class="group ms-3 mb-1">
+                <!-- <button class="button btn btn-primary" type="submit">Ingresar</button> -->
+                <button class="btn btn-primary mt-2 p-2 rounded" type="submit"
+                        [disabled]="formularioRecuperoEmail.invalid || emailValido">Confirma</button>
+                <!-- <input   class="button btn-primary" value="Ingresar"> -->
+              </div>
+            </div>
+          </form>
+          <form *ngIf="emailValido" [formGroup]="formularioRecuperoPregunta" class="login-form recupero" (ngSubmit)="onPregunta()">
+            <div class="sign-in-html d-flex align-items-center justify-content-evenly">
+              <div class="group flex-grow-1">
+                <label for="emailRecupero" class="label emailRecupero">{{preguntaRecup}}</label>
+                <input id="emailRecupero" type="text" class="input emailRecupero" formControlName="respuesta" placeholder="tu respuesta">
+              </div>
+              <div class="group ms-3 mb-1">
+                <!-- <button class="button btn btn-primary" type="submit">Ingresar</button> -->
+                <button class="btn btn-primary mt-2 p-2 rounded" type="submit"
+                        [disabled]="formularioRecuperoPregunta.invalid || preguntaValida">Confirma</button>
+                <!-- <input   class="button btn-primary" value="Ingresar"> -->
+              </div>
+            </div>
+          </form>
+          <div *ngIf="emailValido && preguntaValida" id="lineaEntreFormularios"></div>
+          <form *ngIf="preguntaValida" [formGroup]="formularioPassword" class="login-form recupero mt-5" (ngSubmit)="onNewPassword()">
+            <div class="sign-in-html">
+              <div class="group">
+                <label for="inputPass" class="label emailRecupero">Nueva Contraseña</label>
+                <input id="inputPass" type="password" class="input" formControlName="newPassword" />
+                <div *ngIf="newPassword?.valid"></div>
+                <div class="alert-dangerus" *ngIf="newPassword?.invalid && (newPassword?.dirty || newPassword?.touched)">
+                  <div class="container-error-message" *ngIf="newPassword?.hasError('required')">
+                    <p class="pt-2 ps-3">La contraseña es requerida.</p>
+                  </div>
+                  <div class="container-error-message" *ngIf="newPassword?.hasError('minlength')">
+                    <p class="pt-2 ps-3">La contraseña debe tener como mínimo una longitud de 8 caracteres.</p>
+                  </div>
+                  <div class="container-error-message" *ngIf="newPassword?.hasError('passwordValidation')">
+                    <p class="pt-2 ps-3">{{newPassword?.errors?.passwordValidation.message}}</p>
+                  </div>
+                </div>
+            </div>
+
+            <div class="group">
+                <label for="repitPass" class="label emailRecupero">Repite Nueva Contraseña</label>
+                <input id="repitPass" type="password" class="input" formControlName="repitNewPassword"/>
+                <div *ngIf="repitNewPassword?.valid"></div>
+                <div class="alert-dangerus" *ngIf="repitNewPassword?.invalid && (repitNewPassword?.dirty || repitNewPassword?.touched)">
+                  <div class="container-error-message" *ngIf="repitNewPassword?.hasError('required')">
+                    <p class="pt-2 ps-3">La confirmación de la contraseña es requerida.</p>
+                  </div>
+                  <div class="container-error-message" *ngIf="repitNewPassword?.hasError('compare')">
+                    <p class="pt-2 ps-3">La confirmación y la contraseña no son coincidentes.</p>
+                  </div>
+                </div>
+            </div>
+
+              <div class="group mb-1">
+                <!-- <button class="button btn btn-primary" type="submit">Ingresar</button> -->
+                <button class="btn btn-primary mt-2 p-3 rounded w-100" data-bs-dismiss="modal" type="submit" [disabled]="formularioPassword.invalid">Confirma Nueva Contraseña</button>
+                <!-- <input   class="button btn-primary" value="Ingresar"> -->
+              </div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 

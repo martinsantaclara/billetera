@@ -21,7 +21,7 @@ namespace WebAPI.Controllers
             using (SqlConnection conector = new SqlConnection(cadenaDeConexion))
             {
                 conector.Open();
-                SqlCommand cmd = new SqlCommand("spAgregaCliente", conector);
+                SqlCommand cmd = new SqlCommand("spRegistroCliente", conector);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 SqlParameter paramCodRetorno = new SqlParameter("codRetorno", SqlDbType.Int);
@@ -37,6 +37,12 @@ namespace WebAPI.Controllers
                 cmd.Parameters.AddWithValue("password", hash);
                 cmd.Parameters.AddWithValue("cvu", registro.Cvu);
                 cmd.Parameters.AddWithValue("alias", registro.Alias);
+                cmd.Parameters.AddWithValue("pregunta1", registro.Pregunta1);
+                cmd.Parameters.AddWithValue("respuesta1", registro.Respuesta1);
+                cmd.Parameters.AddWithValue("pregunta2", registro.Pregunta2);
+                cmd.Parameters.AddWithValue("respuesta2", registro.Respuesta2);
+                cmd.Parameters.AddWithValue("pregunta3", registro.Pregunta3);
+                cmd.Parameters.AddWithValue("respuesta3", registro.Respuesta3);
                 cmd.Parameters.AddWithValue("estado", registro.Estado);
                 cmd.ExecuteNonQuery();
                 int rpta = Convert.ToInt32(cmd.Parameters["codRetorno"].Value);

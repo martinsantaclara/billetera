@@ -15,6 +15,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { MayoraceroValidationDirective } from './validations/mayoracero-validation';
 
+import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
+import { MyDefaultTooltipOptions } from './tooltip-default-options';
+
+
 
 
 @NgModule({
@@ -34,6 +38,7 @@ import { MayoraceroValidationDirective } from './validations/mayoracero-validati
     DashboardRoutingModule,
     HttpClientModule,
     NgxSpinnerModule,
+    TooltipModule.forRoot(MyDefaultTooltipOptions as TooltipOptions)
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

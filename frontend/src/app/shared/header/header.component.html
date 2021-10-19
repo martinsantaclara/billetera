@@ -6,7 +6,7 @@
   </div> -->
   <nav class="navbar navbar-expand-xl navbar-dark px-2 py-0" id="menu">
     <div class="container-fluid">
-      <a class="navbar-brand py-0 d-flex align-items-center" routerLink="inicio" (click)="clickLink('brand')">
+      <a class="navbar-brand py-0 d-flex align-items-center" href="inicio" (click)="clickLink('brand')">
         <img src="../../../assets/imagenes/logo1_1.png" alt="">
         <span class="text-white fs-3 fw-bold ps-2">CHAMIGO</span>
       </a>
@@ -34,7 +34,7 @@
             <a class="nav-link fw-bold" id="contacto" (click)="clickLink('contacto')" routerLink="contacto">Contáctanos</a>
           </li>
           <li class="nav-item" *ngIf="isInicio && islogged">
-            <a class="nav-link fw-bold ms-xl-5" id="paneldecontrol" (click)="clickLink('paneldecontrol')" routerLink="dashboard">Panel de Control</a>
+            <a class="nav-link fw-bold ms-xl-5" id="paneldecontrol" (click)="clickLink('paneldecontrol')" href="dashboard">Panel de Control</a>
           </li>
         </ul>
         <div class="nombre show text-white" *ngIf="!isInicio && islogged">Hola, <span class="fw-bold fs-6">{{currentUser.NombreCliente}}</span></div>

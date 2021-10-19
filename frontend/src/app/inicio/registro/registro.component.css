@@ -212,6 +212,29 @@ ul li:hover a {
   text-decoration-color: #f7941f;
 }
 
+.modal-content {
+  background: linear-gradient(90deg, #456475 0%, #99c3ed 100%);
+  border-radius: 2rem;
+}
+
+.modal-title {
+  flex-grow: 1;
+}
+
+.registro-form.preguntas {
+  margin-top: 30px;
+}
+
+.label.preguntas {
+  font-weight: bolder;
+  text-align: start;
+  padding-left: 10px;
+}
+
+.input.respuesta {
+  line-height: 18px;
+}
+
 @media screen and (min-width:400px) {
   .registro-html {
     width: 80%;

@@ -32,8 +32,8 @@ export class AuthService {
   }
 
   checkIsInicio() {
-    if (localStorage.getItem('inicio') !== null) {
-      const ini = localStorage.getItem('inicio');
+    if (sessionStorage.getItem('inicio') !== null) {
+      const ini = sessionStorage.getItem('inicio');
       return ((ini === 'true' ? true : false));
     } else {
       return true;

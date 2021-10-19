@@ -12,6 +12,12 @@ namespace WebAPI.Models
         public string Password { get; set; }
         public string Cvu { get; set; }
         public string Alias { get; set; }
+        public string Pregunta1 { get; set; }
+        public string Respuesta1 { get; set; }
+        public string Pregunta2 { get; set; }
+        public string Respuesta2 { get; set; }
+        public string Pregunta3 { get; set; }
+        public string Respuesta3 { get; set; }
         public string Estado { get; set; }
 
     }

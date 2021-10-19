@@ -70,6 +70,7 @@ export class MonederosComponent implements OnInit, OnDestroy {
   maximo = 0.00;
   moneda = [];
   simboloMonedaPrincipal = '';
+  descubierto = 0.00;
 
   // public criptos = [['BTC',5800125],['USDC',365187]];
 
@@ -107,10 +108,11 @@ export class MonederosComponent implements OnInit, OnDestroy {
      this.saldoEnCripto = this.monedaDashboard.Cantidad;
      this.unidadCripto = this.monedaDashboard.SimboloMoneda;
      this.transaccion1 = (this.monedaDashboard.EsCripto ? 'Comprar' : 'Ingresar');
-     this.transaccion2 = (this.monedaDashboard.EsCripto ? 'Vender' : 'Transferir');
-     this.transaccion3 = (this.monedaDashboard.EsCripto ? 'Intercambiar' : '');
+     this.transaccion2 = (this.monedaDashboard.EsCripto ? 'Vender' : 'Retirar');
+     this.transaccion3 = (this.monedaDashboard.EsCripto ? 'Intercambiar' : 'Transferir');
      this.maximo = parseFloat(this.monedaDashboard.Cantidad);
      this.simboloMonedaPrincipal = this.home.simboloMonedaPrincipal;
+     this.descubierto = this.home.descubierto;
 
      this.criptos = this.home.criptos.filter(cripto => cripto.SimboloMoneda !== this.monedaDashboard.SimboloMoneda)
                     .sort( (a, b) => {
@@ -123,7 +125,7 @@ export class MonederosComponent implements OnInit, OnDestroy {
                       return 0
                       });
 
-
+    console.log(this.criptos);
     //  switch (this.monedero) {
     //   case 'pesos':
     //     // this.logoCripto = '../../../assets/imagenes/logo_peso1.png';
@@ -188,10 +190,9 @@ export class MonederosComponent implements OnInit, OnDestroy {
 
   transaction(opcion:string) {
     this.transaccion = opcion;
-
+    const max = this.home.totalMonedaPrincipal;
     switch (this.transaccion) {
       case 'Comprar':
-        const max = this.home.totalMonedaPrincipal;
         this.formularioCripto = new FormGroup ({
           monto: new FormControl('',[Validators.required,Validators.min(1000),Validators.max(max)])
         });
@@ -204,12 +205,17 @@ export class MonederosComponent implements OnInit, OnDestroy {
       case 'Intercambiar':
         this.formularioCripto = new FormGroup ({
           monto: new FormControl('',[Validators.required,Validators.max(this.maximo),mayoraceroValidation()]),
-          cripto: new FormControl('',[Validators.required])
+          cripto: new FormControl('Cripto...',[Validators.required])
         });
         break;
       case 'Ingresar':
         this.formularioCripto = new FormGroup ({
           monto: new FormControl('',[Validators.required,Validators.min(100),Validators.max(50000)])
+        });
+        break;
+      case 'Retirar':
+        this.formularioCripto = new FormGroup ({
+          monto: new FormControl('',[Validators.required,Validators.max(max),mayoraceroValidation()])
         });
         break;
       case 'Transferir':
@@ -220,9 +226,9 @@ export class MonederosComponent implements OnInit, OnDestroy {
           error: error =>{
           }
         })
-        const max2 = this.home.totalMonedaPrincipal;
+        const maxDescubierto = max + this.descubierto;
         this.formularioCripto = new FormGroup ({
-          monto: new FormControl('',[Validators.required,Validators.max(max2),mayoraceroValidation()]),
+          monto: new FormControl('',[Validators.required,Validators.max(maxDescubierto),mayoraceroValidation()]),
           beneficiario: new FormControl('Seleccione un CVU...',[Validators.required])
         });
         break;
@@ -258,15 +264,11 @@ export class MonederosComponent implements OnInit, OnDestroy {
 
   calculoIntercambio(monto: number, criptoSelect: any) {
     let valor:number = 0;
-    console.log(criptoSelect.SimboloMoneda);
     if (criptoSelect.Cotizacion!==undefined){
-      console.log(monto);
-      console.log(this.monedaDashboard.Cotizacion);
-      console.log(criptoSelect.Cotizacion);
       valor = monto * (this.monedaDashboard.Cotizacion / criptoSelect.Cotizacion);
       this.valorFin = Number.parseFloat(valor.toString()).toFixed(criptoSelect.Decimales);
     } else {
-      this.notifyService.showWarning('Seleccione a que criptomoneda desea intercambiar', 'Atención');
+      this.notifyService.showWarning('Elija a que criptomoneda desea intercambiar', 'Atención');
       this.valorFin = '0.00';
     }
 
@@ -340,6 +342,9 @@ export class MonederosComponent implements OnInit, OnDestroy {
           case 'Ingresar':
             this.Ingresar(monto)
             break;
+          case 'Retirar':
+            this.Retirar(monto)
+            break;
           case 'Transferir':
             this.Transferir(monto,clienteParaTransferencia)
             break;
@@ -383,8 +388,8 @@ export class MonederosComponent implements OnInit, OnDestroy {
   Comprar(monto:number){
     const montoIngreso = monto/this.monedaDashboard.Cotizacion;
     const IdClienteIngreso = this.currentUser.IdCliente;
-    const IdTransaccion = 3;
-    const DescripcionTransaccion = 'Compra de ' + this.monedaDashboard.SimboloMoneda.trim();
+    const IdTransaccion = 4;
+    const DescripcionTransaccion = 'Compra de ' + this.monedaDashboard.NombreMoneda.trim();
     const IdCuentaIngreso = this.currentUser.IdCuenta;
     const IdMonedaIngreso = this.monedaDashboard.IdMoneda;
     const MontoIngreso = montoIngreso;
@@ -392,8 +397,9 @@ export class MonederosComponent implements OnInit, OnDestroy {
     const IdCuentaEgreso = this.currentUser.IdCuenta;
     const IdMonedaEgreso = this.home.monedaPrincipal;
     const MontoEgreso = monto * (-1);
-    this.transaccionService.transaccion(IdClienteIngreso,IdTransaccion,DescripcionTransaccion,IdCuentaIngreso,
-                                        IdMonedaIngreso,MontoIngreso,IdClienteEgreso,IdCuentaEgreso,IdMonedaEgreso,MontoEgreso,true).subscribe({
+    this.transaccionService.transaccion(IdClienteIngreso,IdTransaccion,DescripcionTransaccion,IdCuentaIngreso,IdMonedaIngreso,
+                                        MontoIngreso,IdClienteEgreso,IdCuentaEgreso,IdMonedaEgreso,
+                                        MontoEgreso,true).subscribe({
       next: data =>{
         console.log(data);
       },
@@ -411,8 +417,8 @@ export class MonederosComponent implements OnInit, OnDestroy {
   Vender(monto:number){
     const montoIngreso = monto * this.monedaDashboard.Cotizacion;
     const IdClienteIngreso = this.currentUser.IdCliente;
-    const IdTransaccion = 4;
-    const DescripcionTransaccion = 'Venta de ' + this.monedaDashboard.SimboloMoneda.trim();
+    const IdTransaccion = 5;
+    const DescripcionTransaccion = 'Venta de ' + this.monedaDashboard.NombreMoneda.trim();
     const IdCuentaIngreso = this.currentUser.IdCuenta;
     const IdMonedaIngreso = this.home.monedaPrincipal;
     const MontoIngreso = montoIngreso;
@@ -421,7 +427,8 @@ export class MonederosComponent implements OnInit, OnDestroy {
     const IdMonedaEgreso = this.monedaDashboard.IdMoneda;
     const MontoEgreso = monto * (-1);
     this.transaccionService.transaccion(IdClienteIngreso,IdTransaccion,DescripcionTransaccion,IdCuentaIngreso,
-                                        IdMonedaIngreso,MontoIngreso,IdClienteEgreso,IdCuentaEgreso,IdMonedaEgreso,MontoEgreso,true).subscribe({
+                                        IdMonedaIngreso,MontoIngreso,IdClienteEgreso,IdCuentaEgreso,
+                                        IdMonedaEgreso,MontoEgreso,true).subscribe({
       next: data =>{
         console.log(data);
       },
@@ -440,8 +447,8 @@ export class MonederosComponent implements OnInit, OnDestroy {
     console.log(cripto);
     const montoIngreso = monto * this.monedaDashboard.Cotizacion/cripto.Cotizacion;
     const IdClienteIngreso = this.currentUser.IdCliente;
-    const IdTransaccion = 5;
-    const DescripcionTransaccion = 'Intercambio de ' + this.monedaDashboard.SimboloMoneda.trim() + ' a ' + cripto.SimboloMoneda.trim();
+    const IdTransaccion = 6;
+    const DescripcionTransaccion = 'Intercambio de ' + this.monedaDashboard.NombreMoneda.trim() + ' a ' + cripto.NombreMoneda.trim();
     const IdCuentaIngreso = this.currentUser.IdCuenta;
     const IdMonedaIngreso = cripto.IdMoneda;
     const MontoIngreso = montoIngreso;
@@ -484,10 +491,30 @@ export class MonederosComponent implements OnInit, OnDestroy {
     this.home.monedas[this.monedaDashboard.Indice].TotalEnPesos = this.saldoEnPesos;
     this.home.totalMonedaPrincipal = parseFloat(this.saldoEnPesos);
   }
+  Retirar(monto:number){
+    const IdTransaccion = 2;
+    const DescripcionTransaccion = 'Retiro ' + this.monedaDashboard.SimboloMoneda.trim();
+    const IdClienteEgreso = this.currentUser.IdCliente;
+    const IdCuentaEgreso = this.currentUser.IdCuenta;
+    const IdMonedaEgreso = this.monedaDashboard.IdMoneda;
+    const MontoEgreso = monto * (-1);
+    this.transaccionService.transaccion(0,IdTransaccion,DescripcionTransaccion,0,
+      0,0,IdClienteEgreso,IdCuentaEgreso,IdMonedaEgreso,MontoEgreso,true).subscribe({
+      next: data =>{
+      console.log(data);
+      },
+      error: error =>{
+      }
+    })
+    this.saldoEnPesos = ((parseFloat(this.saldoEnPesos) - monto).toFixed(this.home.decimalesMonedaPrincipal)).toString();
+    this.home.saldoActual = ((parseFloat(this.home.saldoActual) - monto).toFixed(this.home.decimalesMonedaPrincipal)).toString();
+    this.home.monedas[this.monedaDashboard.Indice].TotalEnPesos = this.saldoEnPesos;
+    this.home.totalMonedaPrincipal = parseFloat(this.saldoEnPesos);
+  }
   Transferir(monto:number, clienteTransferencia: ClienteTransfer){
     const IdClienteIngreso = clienteTransferencia.IdCliente;
-    const IdTransaccion = 2;
-    const DescripcionTransaccion = 'Transferencia de ' + this.monedaDashboard.SimboloMoneda.trim() + ' a ' + clienteTransferencia.Email;
+    const IdTransaccion = 3;
+    const DescripcionTransaccion = 'Transferencia de ' + this.monedaDashboard.SimboloMoneda.trim();
     const IdCuentaIngreso = clienteTransferencia.IdCuenta;
     const IdMonedaIngreso = this.monedaDashboard.IdMoneda;
     const MontoIngreso = monto;

@@ -1,6 +1,7 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms'
 import Aos from 'aos';
+import { NotificacionService } from 'src/app/services/notificacion.service';
 
 @Component({
   selector: 'app-contacto',
@@ -26,7 +27,7 @@ export class ContactoComponent implements OnInit {
 
   list = ['Contáctate con nosotros'];
 
-  constructor(private render: Renderer2) {
+  constructor(private render: Renderer2, private notifyService: NotificacionService) {
     this.contactForm = this.createFormGroup();
    }
 
@@ -52,7 +53,10 @@ export class ContactoComponent implements OnInit {
 
   onContact() {
     if (this.contactForm.valid) {
-        console.log('saved form');
+      this.notifyService.showSuccess('Su consulta ha sido enviada. A la brevedad nos contactaremos con usted. Gracias!!! ', 'Felicitaciones');
+      setTimeout(()=> {
+        window.location.href = 'inicio';
+      },5000);
     }
   }
 

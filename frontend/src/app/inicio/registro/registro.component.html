@@ -79,8 +79,10 @@
             </div> -->
 
             <div class="group pt-4">
-              <!-- <button class="button" type="submit" [disabled]="contactForm.invalid">Enviar</button> -->
-              <button class="btn btn-primary w-100 p-3 rounded" type="submit" [disabled]="registroForm.invalid">Registrar</button>
+              <!-- <button class="btn btn-primary w-100 p-3 rounded" type="submit" [disabled]="registroForm.invalid">Registrar</button> -->
+              <span data-bs-toggle="modal" data-bs-target="#ModalPreguntas" >
+                <button class="btn btn-primary w-100 p-3 rounded" type="button" [disabled]="registroForm.invalid" (click)="limpiaPreguntas()">Registrar</button>
+              </span>
             </div>
 
             <h6 class="tienesCuenta mt-4 text-white">¿Ya tienes cuenta?
@@ -91,4 +93,70 @@
         </form>
       </div>
     </div>
+</div>
+
+<div class="modal fade" id="ModalPreguntas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content text-white">
+      <div class="modal-header">
+        <h4 class="modal-title text-center" id="exampleModalLabel">Preguntas de Seguridad</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <h6 class="text-center">Para completar el proceso de Registración debes ingresar tus respuestas que necesitarás para la recuperación de la contraseña.</h6>
+
+        <form [formGroup]="preguntasForm" class="registro-form preguntas" (ngSubmit)="onRegister()">
+          <div class="sign-in-htm">
+            <div class="group">
+              <label for="pregunta1" class="label preguntas">{{pregunta1}}</label>
+              <input id="pregunta1" type="text" class="input respuesta" formControlName="respuesta1">
+              <div *ngIf="respuesta1?.valid && agregaError()"></div>
+              <div class="alert-dangerus" *ngIf="respuesta1?.invalid && (respuesta1?.dirty || respuesta1?.touched) && agregaError()">
+                <div class="container-error-message" *ngIf="respuesta1?.hasError('required')">
+                  <p class="pt-2 ps-3">La respuesta es obligatoria.</p>
+                </div>
+                <div class="container-error-message" *ngIf="respuesta1?.hasError('maxlength')">
+                  <p class="pt-2 ps-3">La respuesta no puede tener más de 50 caracteres como mínimo.</p>
+                </div>
+              </div>
+            </div>
+            <div class="group">
+              <label for="pregunta2" class="label preguntas">{{pregunta2}}</label>
+              <input id="pregunta2" type="text" class="input respuesta" formControlName="respuesta2">
+              <div *ngIf="respuesta2?.valid && agregaError()"></div>
+              <div class="alert-dangerus" *ngIf="respuesta2?.invalid && (respuesta2?.dirty || respuesta2?.touched) && agregaError()">
+                <div class="container-error-message" *ngIf="respuesta2?.hasError('required')">
+                  <p class="pt-2 ps-3">La respuesta es obligatoria.</p>
+                </div>
+                <div class="container-error-message" *ngIf="respuesta2?.hasError('maxlength')">
+                  <p class="pt-2 ps-3">La respuesta no puede tener más de 50 caracteres como mínimo.</p>
+                </div>
+              </div>
+            </div>
+            <div class="group">
+              <label for="pregunta3" class="label preguntas">{{pregunta3}}</label>
+              <input id="pregunta3" type="text" class="input respuesta" formControlName="respuesta3">
+              <div *ngIf="respuesta3?.valid && agregaError()"></div>
+              <div class="alert-dangerus" *ngIf="respuesta3?.invalid && (respuesta3?.dirty || respuesta3?.touched) && agregaError()">
+                <div class="container-error-message" *ngIf="respuesta3?.hasError('required')">
+                  <p class="pt-2 ps-3">La respuesta es obligatoria.</p>
+                </div>
+                <div class="container-error-message" *ngIf="respuesta3?.hasError('maxlength')">
+                  <p class="pt-2 ps-3">La respuesta no puede tener más de 50 caracteres como mínimo.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="group pt-4">
+              <button type="submit" [disabled]="preguntasForm.invalid" class="btn btn-primary w-100 p-3 rounded" data-bs-dismiss="modal">Confirmar Respuestas</button>
+            </div>
+
+          </div>
+        </form>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" (click)="onRegister()" [disabled]="preguntasForm.invalid" class="btn btn-primary" data-bs-dismiss="modal">Confirma Respuestas</button>
+      </div> -->
+    </div>
+  </div>
 </div>

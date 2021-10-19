@@ -15,7 +15,10 @@ namespace WebAPI
 
             // Rutas de API web
             config.MapHttpAttributeRoutes();
-            var cors = new EnableCorsAttribute("*", "*", "*");
+
+            var cors = new EnableCorsAttribute("http://localhost:4200", "*", "*");
+            //var cors = new EnableCorsAttribute("https://frontchamigo.azurewebsites.net", "*", "*");
+
             config.EnableCors(cors);
 
             config.MessageHandlers.Add(new TokenValidationHandler());

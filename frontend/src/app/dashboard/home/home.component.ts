@@ -7,6 +7,12 @@ import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/interfaces/user';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Cripto } from 'src/app/dashboard/interfaces/cripto';
+import { NotificacionService } from 'src/app/services/notificacion.service';
+import { TransaccionService } from '../services/transaccion.service';
+import { Movimientos } from '../interfaces/movimientos';
+
+import { JwtHelperService } from "@auth0/angular-jwt";
+
 
 @Component({
   selector: 'app-home',
@@ -18,6 +24,7 @@ export class HomeComponent implements OnInit {
   private monederoSelected = '';
 
   public currencies: any;
+  public consultaCvuAlias ='';
 
   public monedas: any;
   public monedaPrincipal = 0;
@@ -25,6 +32,7 @@ export class HomeComponent implements OnInit {
   public simboloMonedaPrincipal = '';
   public totalMonedaPrincipal = 0;
   public indiceMonedaPrincipal=0;
+  public descubierto=0;
   public currentUser: any;
 
   public pesosBitcoin = 0;
@@ -35,8 +43,11 @@ export class HomeComponent implements OnInit {
 
   public criptos: Cripto[]=[];
 
+  public movimientos: any;
+
   constructor(private render: Renderer2, private router: Router, private data: DataService, private dataCrypto: CryptosService,
-    private authService: AuthService, private spinner: NgxSpinnerService) {
+    private authService: AuthService, private spinner: NgxSpinnerService, private notifyService: NotificacionService,
+    private transaccionService: TransaccionService ) {
 
       // this.data.getMonedas().subscribe({
       //   next: data => {
@@ -52,20 +63,75 @@ export class HomeComponent implements OnInit {
      }
 
   ngOnInit(): void {
-    AOS.init();
+    // AOS.init();
     this.spinner.show();
+
+
+    // console.log('entra a dashboard con aos')
+
+    const helper = new JwtHelperService();
+
     this.currentUser = JSON.parse(localStorage.getItem('usuario')!);
     const token = (this.currentUser!==null ? this.currentUser.Token : '');
-    this.data.getConfiguraciones(token).subscribe({
-      next: data =>{
-        this.monedaPrincipal = data[0].MonedaPrincipal;
-        this.simboloMonedaPrincipal = data[0].SimboloMonedaPrincipal;
-        this.decimalesMonedaPrincipal = data[0].DecimalesMonedaPrincipal;
-        this.callMonedas();
-      },
-      error: error =>{
+    let isExpired = false;
+    if (token!=='') {
+      isExpired = helper.isTokenExpired(token);
+      if (isExpired){
+        this.notifyService.showWarning('Su sesión ha expirado. Debe ingresar nuevamente sus credenciales','Atención');
+        localStorage.removeItem('usuario')
+        localStorage.removeItem('logged')
+        this.authService.islogged.next(false);
+        sessionStorage.setItem('inicio','true');
+        this.authService.isInicio.next(true);
+
+        setTimeout(()=> {
+          window.location.href = 'login';
+
+          // this.router.navigate(['login']);
+        },2000);
       }
-    })
+    }
+    if (!isExpired) {
+      console.log(token);
+      this.data.getConfiguraciones(token).subscribe({
+        next: data =>{
+          console.log(data);
+          this.monedaPrincipal = data[0].MonedaPrincipal;
+          this.simboloMonedaPrincipal = data[0].SimboloMonedaPrincipal;
+          this.decimalesMonedaPrincipal = data[0].DecimalesMonedaPrincipal;
+          this.descubierto = data[0].Descubierto;
+          this.callMonedas();
+        },
+        error: error =>{
+          if (error.status==401){
+            this.notifyService.showError('No está autorizado para el acceso. Vuelva a ingresar','Error');
+              setTimeout(()=> {
+                window.location.href = 'login';
+
+                // this.router.navigate(['login']);
+              },2000);
+          } else {
+            this.notifyService.showError(error.name + ' Contáctese con el Administrador','Ha ocurrido un Error');
+            if (localStorage.getItem('usuario')!==null) {
+              localStorage.removeItem('usuario')
+            }
+            if (localStorage.getItem('logged')!==null) {
+              localStorage.removeItem('logged')
+              this.authService.islogged.next(false);
+            }
+            if (sessionStorage.getItem('inicio')!==null) {
+              sessionStorage.setItem('inicio','true');
+              this.authService.isInicio.next(true);
+            }
+
+            setTimeout(()=> {
+              window.location.href = 'inicio';
+            },2000);
+          }
+        }
+      })
+    }
+
   }
 
   public hideSpinner() {
@@ -83,58 +149,72 @@ export class HomeComponent implements OnInit {
     //   }
     // })
     const token = (this.currentUser!==null ? this.currentUser.Token : '');
-    this.data.postMonedas(this.currentUser.IdCuenta, token).subscribe({
-      next: response =>{
-        let calculoSaldo=0;
-        let cantMonedas = response.length;
-        this.monedas = response.map((moneda:any,index:number) => {
-          let propiedades = {
-            "Indice": index,
-            "IdMoneda": moneda.IdMoneda,
-            "NombreMoneda": moneda.NombreMoneda,
-            "SimboloMoneda": moneda.SimboloMoneda,
-            "UrlLogoMoneda": moneda.UrlLogoMoneda,
-            "Abreviatura":moneda.Abreviatura,
-            "EsCripto": moneda.Criptomoneda,
-            "Clase": 'panelcripto ' + moneda.Abreviatura,
-            "Cotizacion": 1,
-            "Cantidad": moneda.TotalCuentaMoneda.toFixed(moneda.Decimales),
-            "Decimales": moneda.Decimales,
-            "TotalEnPesos":moneda.TotalCuentaMoneda.toFixed(this.decimalesMonedaPrincipal)
-          };
-          if (moneda.IdMoneda===this.monedaPrincipal) {
-            this.totalMonedaPrincipal = moneda.TotalCuentaMoneda;
-            this.indiceMonedaPrincipal = index;
-          }
-          cantMonedas -= 1
-          this.dataCrypto.getCrypto(moneda.Abreviatura.trim())
-          .then((crypto)=>{
-
-            const pesosCrypto = (moneda.Criptomoneda ? crypto[moneda.Abreviatura.trim()].ars : 1);
-            propiedades['Cotizacion'] = pesosCrypto;
-            calculoSaldo += pesosCrypto * (moneda.TotalCuentaMoneda).toFixed(moneda.Decimales);
-            propiedades['TotalEnPesos'] = (pesosCrypto * moneda.TotalCuentaMoneda.toFixed(moneda.Decimales)).toFixed(this.decimalesMonedaPrincipal);
-            this.saldoActual =  calculoSaldo.toFixed(this.decimalesMonedaPrincipal);
-
-            if (moneda.Criptomoneda) {
-              this.criptos.push({"IdMoneda": moneda.IdMoneda, "SimboloMoneda":moneda.SimboloMoneda,"Cotizacion":pesosCrypto,
-                                 "Indice":index, "Decimales":moneda.Decimales});
+    if (this.currentUser!==null){
+      this.data.postMonedas(this.currentUser.IdCuenta, token).subscribe({
+        next: response =>{
+          let calculoSaldo=0;
+          let cantMonedas = response.length;
+          this.monedas = response.map((moneda:any,index:number) => {
+            let propiedades = {
+              "Indice": index,
+              "IdMoneda": moneda.IdMoneda,
+              "NombreMoneda": moneda.NombreMoneda,
+              "SimboloMoneda": moneda.SimboloMoneda,
+              "UrlLogoMoneda": moneda.UrlLogoMoneda,
+              "Abreviatura":moneda.Abreviatura,
+              "EsCripto": moneda.Criptomoneda,
+              "Clase": 'panelcripto ' + moneda.Abreviatura,
+              "Cotizacion": 1,
+              "Cantidad": moneda.TotalCuentaMoneda.toFixed(moneda.Decimales),
+              "Decimales": moneda.Decimales,
+              "TotalEnPesos":moneda.TotalCuentaMoneda.toFixed(this.decimalesMonedaPrincipal)
+            };
+            if (moneda.IdMoneda===this.monedaPrincipal) {
+              this.totalMonedaPrincipal = moneda.TotalCuentaMoneda;
+              this.indiceMonedaPrincipal = index;
             }
-            if (cantMonedas===0) {
-              setTimeout(() => {
-                this.hideSpinner();
-              }, 3000);
-            }
+            cantMonedas -= 1
+            this.dataCrypto.getCrypto(moneda.Abreviatura.trim())
+            .then((crypto)=>{
 
-          })
+              const pesosCrypto = (moneda.Criptomoneda ? crypto[moneda.Abreviatura.trim()].ars : 1);
+              propiedades['Cotizacion'] = pesosCrypto;
+              calculoSaldo += pesosCrypto * (moneda.TotalCuentaMoneda).toFixed(moneda.Decimales);
+              propiedades['TotalEnPesos'] = (pesosCrypto * moneda.TotalCuentaMoneda.toFixed(moneda.Decimales)).toFixed(this.decimalesMonedaPrincipal);
+              this.saldoActual =  calculoSaldo.toFixed(this.decimalesMonedaPrincipal);
 
-          return propiedades;
+              if (moneda.Criptomoneda) {
+                this.criptos.push({"IdMoneda": moneda.IdMoneda, "NombreMoneda": moneda.NombreMoneda, "SimboloMoneda":moneda.SimboloMoneda,"Cotizacion":pesosCrypto,
+                                   "Indice":index, "Decimales":moneda.Decimales});
+              }
+              if (cantMonedas===0) {
+                setTimeout(() => {
+                  this.hideSpinner();
+                }, 3000);
+              }
 
-         });
-      },
-      error: error =>{
-      }
-     })
+            })
+
+            return propiedades;
+
+           });
+        },
+        error: error =>{
+          this.notifyService.showError('No está autorizado para el acceso. Vuelva a ingresar','Error');
+                  setTimeout(()=> {
+                    window.location.href = 'login';
+                    // this.router.navigate(['login']);
+                  },2000);
+        }
+       })
+    } else {
+      this.notifyService.showError('No está autorizado para el acceso. Vuelva a ingresar','Error');
+      setTimeout(()=> {
+        window.location.href = 'login';
+        // this.router.navigate(['login']);
+      },2000);
+    }
+
   }
 
   monedero(i:number, opcion:string) {
@@ -160,6 +240,22 @@ export class HomeComponent implements OnInit {
     localStorage.setItem('moneda',JSON.stringify(this.monedas[i]));
 
     this.router.navigate([`dashboard/${opcion}`]);
+  }
+
+  cvualias(consulta: string) {
+    this.consultaCvuAlias = consulta;
+  }
+
+  cargaMovimientos(){
+    this.transaccionService.ultimosMovimientos(this.currentUser.IdCuenta).subscribe({
+      next: data =>{
+        this.movimientos = data;
+        console.log(this.movimientos);
+      },
+      error: error =>{
+        console.log(error);
+      }
+    })
   }
 
 }

@@ -20,9 +20,9 @@ export class MayoraceroValidationDirective implements Validator {
   validate(control: import("@angular/forms").AbstractControl): import("@angular/forms").ValidationErrors | null {
     const valor = <number>control.value;
 
-    if (valor===0) {
+    if (valor<=0) {
 
-      console.log('valor igual a cero');
+      console.log('valor menor o igual a cero');
       return {'mayoraceroValidation': {'message': 'Escoge un mejor password'}}
     }
 

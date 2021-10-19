@@ -37,13 +37,41 @@
       </div>
     </div>
     <div class="col-8">
-      <div class="saldo position-relative">
-        <h1 class="text-center fs-2 mt-3 position-relative">Tu saldo actual es</h1>
-        <h1 class="text-center"><span class="importeSaldo">{{simboloMonedaPrincipal}} {{saldoActual}}</span></h1>
+      <div class="d-flex justify-content-around pt-2">
+        <div class="saldo position-relative">
+          <h1 class="text-center fs-2 mt-3 position-relative">Tu saldo actual es</h1>
+          <h1 class="text-center"><span class="importeSaldo">{{simboloMonedaPrincipal}} {{saldoActual}}</span></h1>
+        </div>
+
+        <div class="d-flex flex-column justify-content-evenly consultas">
+
+          <span data-bs-toggle="modal" data-bs-target="#ModalCvuAlias">
+            <button type="button" class="btn btn-primary btn-rounded" style="width: 160px;" (click)="cvualias('Cvu')" tooltip="Consulta CvU" placement="top">
+              <i class="bi bi-bank"></i>
+              <!-- <img src="src/assets/imagenes/iconos/bank.svg" alt="Cvu" width="32" height="32"> -->
+              Cvu
+            </button>
+          </span>
+          <span data-bs-toggle="modal" data-bs-target="#ModalCvuAlias" >
+            <button type="button" class="btn btn-primary btn-rounded mr-2"  style="width: 160px;" (click)="cvualias('Alias')" tooltip="Consulta Alias" placement="right">
+              <i class="bi bi-person"></i>
+              <!-- <img src="src/assets/imagenes/iconos/person.svg" alt="Cvu" width="32" height="32"> -->
+              Alias
+            </button>
+          </span>
+          <span data-bs-toggle="modal" data-bs-target="#ModalMovimientos" >
+            <button type="button" class="btn btn-primary btn-rounded"  style="width: 160px;" (click)="cargaMovimientos()" tooltip="Consulta Movimientos" placement="right">
+              <i class="bi bi-card-list"></i>
+              <!-- <img src="src/assets/imagenes/iconos/card-list.svg" alt="Cvu" width="32" height="32"> -->
+              Movimientos
+            </button>
+          </span>
+        </div>
       </div>
 
       <div class="contenedorSlider position-relative d-flex justify-content-center">
-        <div class="call-to-action text-white text-center position-absolute" data-aos="flip-right" data-aos-easing="ease-out-cubic" data-aos-duration="15000">
+        <!-- <div class="call-to-action text-white text-center position-absolute" data-aos="flip-right" data-aos-easing="ease-out-cubic" data-aos-duration="15000"> -->
+        <div class="call-to-action text-white text-center position-absolute">
           <h3 class="fw-bold">Selecciona un monedero <br> y <br> elige que querés hacer </h3>
         </div>
         <div class="contenedorImagen pt-5">
@@ -86,5 +114,62 @@
 </div>
 <router-outlet></router-outlet>
 <ngx-spinner type="ball-newton-cradle">  <p style="font-size: 20px; color: white">Cargando datos...</p></ngx-spinner>
+
+
+<div class="modal fade" id="ModalCvuAlias" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Mi {{consultaCvuAlias}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center fs-3" *ngIf="consultaCvuAlias=='Cvu'">
+        {{currentUser.Cvu}}
+      </div>
+      <div class="modal-body text-center fs-3" *ngIf="consultaCvuAlias=='Alias'">
+        {{currentUser.Alias}}
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="ModalMovimientos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Últimos Movimientos</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body movimientos">
+        <table class="table text-white">
+          <thead>
+            <tr class="text-white">
+              <th class="text-center" scope="col">Fecha</th>
+              <th class="text-center" scope="col">Hora</th>
+              <th class="text-center" scope="col">Transaccion</th>
+              <th class="text-center" scope="col">Monto</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let movimiento of movimientos">
+              <th class="text-center" scope="row">{{movimiento.Fecha}}</th>
+              <td class="text-center" >{{movimiento.Hora | slice:0:5}}</td>
+              <td>{{movimiento.DescripcionTransaccion}}</td>
+              <td class="text-end" [ngStyle]="{'background-color':movimiento.Monto < 0 ?'red':'green'}">{{movimiento.SimboloMoneda}} {{movimiento.Monto | number: '1.2-6'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>
 
 

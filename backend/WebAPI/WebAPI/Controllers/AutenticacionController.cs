@@ -23,8 +23,12 @@ namespace WebAPI.Controllers
         public int IdCliente { get; set; }
         public string NombreCliente { get; set; }
         public string Email { get; set; }
+        public string Cvu { get; set; }
+        public string Alias { get; set; }
         public string UrlFoto { get; set; }
         public string Token { get; set; }
+        public int IdCuenta { get; set; }
+
 
     }
 
@@ -44,7 +48,8 @@ namespace WebAPI.Controllers
             using (SqlConnection conector = new SqlConnection(cadenaDeConexion))
             {
                 conector.Open();
-                string comando = "SELECT * FROM Clientes WHERE Email='" + cliente.Email + "'";
+                string comando = "SELECT IdCliente, NombreCliente, Email, Password, UrlFoto, Clientes.IdCuenta, Cvu, Alias FROM Clientes " +
+                                 "INNER JOIN Cuentas ON Clientes.IdCuenta=Cuentas.IdCuenta WHERE Email='" + cliente.Email + "'";
                 SqlDataAdapter adaptador = new SqlDataAdapter(comando, conector);
                 adaptador.Fill(dt);
 
@@ -69,7 +74,10 @@ namespace WebAPI.Controllers
                             NombreCliente = dt.Rows[0]["NombreCliente"].ToString(),
                             Email = dt.Rows[0]["Email"].ToString(),
                             UrlFoto = dt.Rows[0]["UrlFoto"].ToString(),
-                            Token = token
+                            Token = token,
+                            IdCuenta = Int32.Parse(dt.Rows[0]["IdCuenta"].ToString()),
+                            Cvu = dt.Rows[0]["Cvu"].ToString(),
+                            Alias = dt.Rows[0]["Alias"].ToString(),
                         };
                         string jsonResponse = JsonConvert.SerializeObject(response);
                         return Ok(jsonResponse);
