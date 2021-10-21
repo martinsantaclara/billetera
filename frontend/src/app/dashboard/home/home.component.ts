@@ -42,6 +42,7 @@ export class HomeComponent implements OnInit {
   public saldoActual = '';
 
   public criptos: Cripto[]=[];
+  public crypto: any;
 
   public movimientos: any;
 
@@ -174,26 +175,44 @@ export class HomeComponent implements OnInit {
               this.indiceMonedaPrincipal = index;
             }
             cantMonedas -= 1
-            this.dataCrypto.getCrypto(moneda.Abreviatura.trim())
-            .then((crypto)=>{
+            // this.dataCrypto.getCrypto(moneda.Abreviatura.trim())
+            // .then((crypto)=>{
 
-              const pesosCrypto = (moneda.Criptomoneda ? crypto[moneda.Abreviatura.trim()].ars : 1);
-              propiedades['Cotizacion'] = pesosCrypto;
-              calculoSaldo += pesosCrypto * (moneda.TotalCuentaMoneda).toFixed(moneda.Decimales);
-              propiedades['TotalEnPesos'] = (pesosCrypto * moneda.TotalCuentaMoneda.toFixed(moneda.Decimales)).toFixed(this.decimalesMonedaPrincipal);
-              this.saldoActual =  calculoSaldo.toFixed(this.decimalesMonedaPrincipal);
+            //   const pesosCrypto = (moneda.Criptomoneda ? crypto[moneda.Abreviatura.trim()].ars : 1);
+            //   propiedades['Cotizacion'] = pesosCrypto;
+            //   calculoSaldo += pesosCrypto * (moneda.TotalCuentaMoneda).toFixed(moneda.Decimales);
+            //   propiedades['TotalEnPesos'] = (pesosCrypto * moneda.TotalCuentaMoneda.toFixed(moneda.Decimales)).toFixed(this.decimalesMonedaPrincipal);
+            //   this.saldoActual =  calculoSaldo.toFixed(this.decimalesMonedaPrincipal);
 
-              if (moneda.Criptomoneda) {
-                this.criptos.push({"IdMoneda": moneda.IdMoneda, "NombreMoneda": moneda.NombreMoneda, "SimboloMoneda":moneda.SimboloMoneda,"Cotizacion":pesosCrypto,
-                                   "Indice":index, "Decimales":moneda.Decimales});
-              }
-              if (cantMonedas===0) {
-                setTimeout(() => {
-                  this.hideSpinner();
-                }, 3000);
-              }
+            //   if (moneda.Criptomoneda) {
+            //     this.criptos.push({"IdMoneda": moneda.IdMoneda, "NombreMoneda": moneda.NombreMoneda, "SimboloMoneda":moneda.SimboloMoneda,"Cotizacion":pesosCrypto,
+            //                        "Indice":index, "Decimales":moneda.Decimales});
+            //   }
+            //   if (cantMonedas===0) {
+            //     setTimeout(() => {
+            //       this.hideSpinner();
+            //     }, 3000);
+            //   }
 
-            })
+            // })
+
+            this.crypto = this.dataCrypto.getCryptus(moneda.Abreviatura.trim());
+            console.log(this.crypto);
+            const pesosCrypto = (moneda.Criptomoneda ? this.crypto[moneda.Abreviatura.trim()].ars : 1);
+            propiedades['Cotizacion'] = pesosCrypto;
+            calculoSaldo += pesosCrypto * (moneda.TotalCuentaMoneda).toFixed(moneda.Decimales);
+            // tslint:disable-next-line:max-line-length
+            propiedades['TotalEnPesos'] = (pesosCrypto * moneda.TotalCuentaMoneda.toFixed(moneda.Decimales)).toFixed(this.decimalesMonedaPrincipal);
+            this.saldoActual =  calculoSaldo.toFixed(this.decimalesMonedaPrincipal);
+            if (moneda.Criptomoneda) {
+              this.criptos.push({'IdMoneda': moneda.IdMoneda, 'NombreMoneda': moneda.NombreMoneda, 'SimboloMoneda': moneda.SimboloMoneda, 'Cotizacion': pesosCrypto,
+                                  'Indice': index, 'Decimales': moneda.Decimales});
+            }
+            if (cantMonedas === 0) {
+              setTimeout(() => {
+                this.hideSpinner();
+              }, 3000);
+            }
 
             return propiedades;
 

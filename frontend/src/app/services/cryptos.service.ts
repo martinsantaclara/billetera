@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { SyncRequestClient } from 'ts-sync-request/dist';
 
 @Injectable({
   providedIn: 'root'
@@ -25,4 +26,14 @@ export class CryptosService {
     const data = await response.json();
     return data
   }
+
+  getCryptus(crypto: string) {
+    const response = new SyncRequestClient()
+    .addHeader('Content-Type', 'application/json')
+    .get<[]>(`https://api.coingecko.com/api/v3/simple/price?ids=${crypto}&vs_currencies=ars`);
+    // console.log(response);
+    // console.log(crypto);
+    return response;
+  }
+
 }
